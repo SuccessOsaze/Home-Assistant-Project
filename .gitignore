@@ -1,0 +1,45 @@
+# === SECRETS & AUTHENTICATION ===
+secrets.yaml
+*.token
+.google.token
+.uuid
+known_devices.yaml
+.spotify-token-cache
+
+# === DATABASE FILES ===
+*.db
+*.db-shm
+*.db-wal
+home-assistant.log*
+home-assistant_v2.db*
+
+# === STORAGE (contains credentials) ===
+.storage/
+.cloud/
+.google_maps_location_sharing.cookies.*
+
+# === LOGS & TEMPORARY FILES ===
+*.log
+*.log.*
+*.pid
+*.xml
+OZW_Log.txt
+.HA_VERSION
+*.backup
+
+# === DEPENDENCIES & CACHE ===
+deps/
+tts/
+www/community/
+custom_components/*/.*
+
+# === SYSTEM FILES ===
+.DS_Store
+Thumbs.db
+*~
+*.swp
+*.swo
+
+# === SENSITIVE DATA ===
+ip_bans.yaml
+.homekit.state
