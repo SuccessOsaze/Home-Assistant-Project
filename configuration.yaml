@@ -1,0 +1,39 @@
+
+# Loads default set of integrations. Do not remove.
+default_config:
+
+# Load frontend themes from the themes folder
+frontend:
+  themes: !include_dir_merge_named themes
+
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+# Virtual MQTT Devices for Testing
+mqtt:
+  switch:
+    - name: "Virtual Smart Plug"
+      unique_id: "virtual_smart_plug_001"
+      state_topic: "test/plug/state"
+      command_topic: "test/plug/set"
+      payload_on: "ON"
+      payload_off: "OFF"
+      
+  light:
+    - name: "Virtual Smart Bulb"
+      unique_id: "virtual_smart_bulb_001"
+      state_topic: "test/bulb/state"
+      command_topic: "test/bulb/set"
+      brightness_state_topic: "test/bulb/brightness"
+      brightness_command_topic: "test/bulb/brightness/set"
+      brightness_scale: 100
+      color_temp_state_topic: "test/bulb/color_temp"
+      color_temp_command_topic: "test/bulb/color_temp/set"
+      
+  sensor:
+    - name: "Virtual Plug Power"
+      unique_id: "virtual_plug_power_001"
+      state_topic: "test/plug/power"
+      unit_of_measurement: "W"
+      device_class: power

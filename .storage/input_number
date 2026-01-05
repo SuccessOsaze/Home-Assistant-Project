@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "input_number",
+  "data": {
+    "items": [
+      {
+        "id": "virtual_temp",
+        "min": 15.0,
+        "max": 40.0,
+        "name": "Virtual Temp",
+        "step": 0.5,
+        "mode": "slider",
+        "unit_of_measurement": "°C"
+      },
+      {
+        "id": "virtual_lux",
+        "min": 0.0,
+        "max": 1000.0,
+        "name": "Virtual Lux",
+        "step": 10.0,
+        "unit_of_measurement": "lx",
+        "mode": "slider"
+      },
+      {
+        "id": "virtual_power",
+        "min": 0.0,
+        "max": 2000.0,
+        "name": "Virtual Power",
+        "unit_of_measurement": "W",
+        "step": 1.0,
+        "mode": "slider"
+      }
+    ]
+  }
+}

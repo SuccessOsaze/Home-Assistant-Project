@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "bluetooth.remote_scanners",
+  "data": {
+    "E4:5F:01:2F:BD:B4": {
+      "connectable": true,
+      "expire_seconds": 195.0,
+      "discovered_device_advertisement_datas": {
+        "01:43:A5:2B:D6:24": {
+          "device": {
+            "address": "01:43:A5:2B:D6:24",
+            "name": "Bn3034642",
+            "rssi": -95,
+            "details": {
+              "source": "E4:5F:01:2F:BD:B4",
+              "path": "/org/bluez/hci0/dev_01_43_A5_2B_D6_24",
+              "props": {
+                "Adapter": "/org/bluez/hci0"
+              }
+            }
+          },
+          "advertisement_data": {
+            "local_name": "Bn3034642",
+            "manufacturer_data": {},
+            "service_data": {},
+            "service_uuids": [
+              "00001812-0000-1000-8000-00805f9b34fb"
+            ],
+            "rssi": -95,
+            "tx_power": -127,
+            "platform_data": []
+          }
+        },
+        "15:79:EB:FB:90:F4": {
+          "device": {
+            "address": "15:79:EB:FB:90:F4",
+            "name": null,
+            "rssi": -44,
+            "details": {
+              "source": "E4:5F:01:2F:BD:B4",
+              "path": "/org/bluez/hci0/dev_15_79_EB_FB_90_F4",
+              "props": {
+                "Adapter": "/org/bluez/hci0"
+              }
+            }
+          },
+          "advertisement_data": {
+            "local_name": null,
+            "manufacturer_data": {
+              "6": "01092022560ec4abde514b89e1a01a9ac05e94e818c4789e9f76fd"
+            },
+            "service_data": {},
+            "service_uuids": [],
+            "rssi": -44,
+            "tx_power": -127,
+            "platform_data": []
+          }
+        },
+        "2A:01:CE:C0:99:3E": {
+          "device": {
+            "address": "2A:01:CE:C0:99:3E",
+            "name": null,
+            "rssi": -42,
+            "details": {
+              "source": "E4:5F:01:2F:BD:B4",
+              "path": "/org/bluez/hci0/dev_2A_01_CE_C0_99_3E",
+              "props": {
+                "Adapter": "/org/bluez/hci0"
+              }
+            }
+          },
+          "advertisement_data": {
+            "local_name": null,
+            "manufacturer_data": {
+              "6": "01092022b9b6e98613566787722a29bebb8a20e62e53ace51776fe"
+            },
+            "service_data": {},
+            "service_uuids": [],
+            "rssi": -42,
+            "tx_power": -127,
+            "platform_data": []
+          }
+        }
+      },
+      "discovered_device_timestamps": {
+        "01:43:A5:2B:D6:24": 1767606129.5360923,
+        "15:79:EB:FB:90:F4": 1767606072.3470452,
+        "2A:01:CE:C0:99:3E": 1767606135.9317596
+      },
+      "discovered_device_raw": {
+        "01:43:A5:2B:D6:24": "0201060319c003030212180a09426e33303334363432",
+        "15:79:EB:FB:90:F4": "1eff060001092022560ec4abde514b89e1a01a9ac05e94e818c4789e9f76fd",
+        "2A:01:CE:C0:99:3E": "1eff060001092022b9b6e98613566787722a29bebb8a20e62e53ace51776fe"
+      }
+    }
+  }
+}

@@ -1,0 +1,95 @@
+#Virtual Automations (relevant for future testing)
+- alias: Virtual Motion Lights Test
+  description: "Turn on bulb when motion detected in dark conditions"
+  trigger:
+    - platform: state
+      entity_id: input_boolean.virtual_motion
+      to: 'on'
+  condition:
+    - condition: numeric_state
+      entity_id: input_number.virtual_lux
+      below: 100
+  action:
+    - service: light.turn_on
+      target:
+        entity_id: light.virtual_smart_bulb
+      data:
+        brightness_pct: 50
+        color_temp: 370
+    - service: notify.persistent_notification
+      data:
+        message: "Virtual motion detected! Bulb turned on at {{ now().strftime('%H:%M:%S') }}"
+        
+
+#Real Device Automations 
+- alias: Living Room Motion Lights
+  description: "Turn on the light when motion is detected and it's dark"
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.sensor_presence   # ← your real motion sensor
+      to: 'on'
+      id: motion_on
+      
+    - platform: state
+      entity_id: binary_sensor.sensor_presence
+      to: 'off'
+      for: "00:02:00"
+      id: motion_off
+  #condition:
+   # - condition: numeric_state
+    #  entity_id: sensor.sensor_illuminance     # ← your real lux sensor
+     # below: 100                                    # or change to 50–200 depending on your sensor
+    # Optional: add a sun condition as backup (very reliable)
+    # - condition: state
+     # entity_id: sun.sun
+     # state: 'below_horizon'
+  action:
+    - choose:
+        - conditions:
+            - condition: trigger
+              id: motion_on
+          sequence:
+            - service: light.turn_on
+              target:
+                entity_id: light.smart_bulb
+              data:                           # adjust as you like
+                color_temp: 300
+                brightness_pct: 80
+                transition: 3
+            - service: notify.persistent_notification
+              data:
+               message: "Motion detected in Living Room! Light turned ON at {{ now().strftime('%H:%M:%S') }}"    
+              
+        - conditions:
+            - condition: trigger
+              id: motion_off
+          sequence:
+            - service: light.turn_off
+              target:
+                entity_id: light.smart_bulb
+            - service: notify.persistent_notification
+              data:
+               message: "Motion Cleared in Living Room! Light turned OFF at {{ now().strftime('%H:%M:%S') }}"    
+  mode: restart              
+    # Optional: keep the notification for debugging
+   # - service: notify.persistent_notification
+    #  data:
+     #  message: "Motion detected in Living Room! Light turned on at {{ now().strftime('%H:%M:%S') }}"
+ # mode: restart
+  
+    # service: light.turn_on
+      # target:
+        # entity_id: light.smart_bulb       # ← your real light(s)
+     # data:
+       # brightness_pct: 80                          # adjust as you like
+      #  color_temp: 370                             # ~2700K warm white
+        # You can also add transition: 3 for smooth fade-in
+        
+        
+        
+    
+        
+        
+        
+        
+        

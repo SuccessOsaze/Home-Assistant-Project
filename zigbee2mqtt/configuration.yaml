@@ -1,0 +1,61 @@
+version: 4
+mqtt:
+  base_topic: zigbee2mqtt
+  server: mqtt://core-mosquitto:1883
+  user: addons
+  password: aiPa0zaequ8phaezieph4ieB6choonaiseineileipo6UuTeitahp7aig8ui6ou1
+serial:
+  port: /dev/ttyUSB0
+  adapter: ember
+  baudrate: 115200
+  rtscts: false
+advanced:
+  log_level: info
+  channel: 11
+  network_key:
+    - 54
+    - 167
+    - 205
+    - 213
+    - 38
+    - 216
+    - 66
+    - 60
+    - 144
+    - 205
+    - 94
+    - 13
+    - 26
+    - 131
+    - 135
+    - 9
+  pan_id: 57535
+  ext_pan_id:
+    - 211
+    - 120
+    - 247
+    - 239
+    - 199
+    - 183
+    - 245
+    - 247
+frontend:
+  enabled: true
+  port: 8099
+homeassistant:
+  enabled: true
+devices:
+  '0xa4c1384da3ad1b38':
+    friendly_name: Sensor
+    description: |-
+      4-in-1 Motion Mmwave Motion Sensor
+
+      Temperature
+      Humidity
+      Human Presence
+      Luminescence
+  '0x0c4314fffe54b110':
+    friendly_name: Smart_Plug
+    description: Smart Plug
+  '0xa4c138707147732e':
+    friendly_name: Smart_Bulb

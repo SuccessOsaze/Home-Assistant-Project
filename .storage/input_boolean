@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "input_boolean",
+  "data": {
+    "items": [
+      {
+        "id": "virtual_motion",
+        "name": "Virtual Motion",
+        "icon": "mdi:motion-sensor"
+      },
+      {
+        "id": "virtual_occupancy",
+        "name": "Virtual Occupancy",
+        "icon": "mdi:home-account"
+      }
+    ]
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "lovelace.dashboard_universal",
+  "data": {
+    "config": {
+      "views": [
+        {
+          "icon": "mdi:home",
+          "path": "home",
+          "type": "sections",
+          "max_columns": 2,
+          "sections": [
+            {
+              "type": "grid",
+              "column_span": 2,
+              "cards": []
+            },
+            {
+              "column_span": 2,
+              "type": "grid",
+              "cards": [
+                {
+                  "type": "tile",
+                  "entity": "update.smart_plug",
+                  "show_entity_picture": true
+                },
+                {
+                  "type": "tile",
+                  "entity": "light.smart_bulb",
+                  "show_entity_picture": true
+                }
+              ]
+            },
+            {
+              "type": "grid",
+              "column_span": 2,
+              "cards": [
+                {
+                  "type": "heading",
+                  "heading": "Summaries"
+                },
+                {
+                  "type": "home-summary",
+                  "summary": "light",
+                  "vertical": true,
+                  "tap_action": {
+                    "action": "navigate",
+                    "navigation_path": "/light?historyBack=1"
+                  },
+                  "grid_options": {
+                    "rows": 2,
+                    "columns": 4
+                  }
+                }
+              ]
+            },
+            {
+              "type": "grid",
+              "column_span": 2,
+              "cards": [
+                {
+                  "type": "heading",
+                  "heading": "",
+                  "heading_style": "subtitle"
+                },
+                {
+                  "type": "weather-forecast",
+                  "entity": "weather.forecast_home",
+                  "forecast_type": "daily"
+                }
+              ]
+            }
+          ],
+          "header": {
+            "layout": "responsive",
+            "card": {
+              "type": "markdown",
+              "text_only": true,
+              "content": "## Welcome {{ user }}"
+            }
+          }
+        },
+        {
+          "title": "Bedroom",
+          "path": "areas-bedroom",
+          "subview": true,
+          "type": "sections",
+          "header": {
+            "badges_position": "bottom"
+          },
+          "max_columns": 2,
+          "sections": [],
+          "badges": []
+        },
+        {
+          "title": "Kitchen",
+          "path": "areas-kitchen",
+          "subview": true,
+          "type": "sections",
+          "header": {
+            "badges_position": "bottom"
+          },
+          "max_columns": 2,
+          "sections": [],
+          "badges": []
+        },
+        {
+          "title": "Living Room",
+          "path": "areas-living_room",
+          "subview": true,
+          "type": "sections",
+          "header": {
+            "badges_position": "bottom"
+          },
+          "max_columns": 2,
+          "sections": [],
+          "badges": []
+        },
+        {
+          "title": "Media players",
+          "path": "media-players",
+          "subview": true,
+          "icon": "mdi:multimedia",
+          "type": "sections",
+          "max_columns": 2,
+          "sections": []
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "lovelace",
+  "data": {
+    "config": {
+      "views": [
+        {
+          "path": "default_view",
+          "title": "Home",
+          "cards": [
+            {
+              "type": "entities",
+              "entities": [
+                "person.home_automation_project"
+              ]
+            },
+            {
+              "type": "entities",
+              "entities": [
+                "input_select.virtual_fan_speed",
+                "input_number.virtual_lux",
+                "input_boolean.virtual_motion",
+                "input_boolean.virtual_occupancy",
+                "input_number.virtual_power",
+                "input_number.virtual_temp"
+              ],
+              "title": "Helpers"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                "light.virtual_smart_bulb"
+              ],
+              "title": "Light"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                "sensor.virtual_plug_power"
+              ],
+              "title": "Sensor"
+            },
+            {
+              "type": "entities",
+              "entities": [
+                "switch.virtual_smart_plug"
+              ],
+              "title": "Switch"
+            },
+            {
+              "type": "weather-forecast",
+              "entity": "weather.forecast_home",
+              "show_forecast": false
+            },
+            {
+              "type": "entities",
+              "title": "Virtual Testing Lab",
+              "entities": [
+                "light.virtual_smart_bulb",
+                "switch.virtual_smart_plug",
+                "sensor.virtual_plug_power",
+                "input_boolean.virtual_motion",
+                "input_boolean.virtual_occupancy",
+                "input_number.virtual_temp",
+                "input_number.virtual_lux",
+                "input_number.virtual_power",
+                "input_select.virtual_fan_speed"
+              ],
+              "show_header_toggle": true,
+              "state_color": true
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

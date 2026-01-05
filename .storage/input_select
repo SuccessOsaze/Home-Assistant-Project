@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "minor_version": 2,
+  "key": "input_select",
+  "data": {
+    "items": [
+      {
+        "id": "virtual_fan_speed",
+        "name": "Virtual Fan Speed",
+        "options": [
+          "off",
+          "low",
+          "medium",
+          "high"
+        ]
+      }
+    ]
+  }
+}

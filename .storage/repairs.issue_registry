@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "minor_version": 2,
+  "key": "repairs.issue_registry",
+  "data": {
+    "issues": [
+      {
+        "created": "2025-11-19T23:03:26.577429+00:00",
+        "dismissed_version": null,
+        "domain": "hassio",
+        "is_persistent": false,
+        "issue_id": "4c9e7989be134b138428c883cd8a9c53"
+      },
+      {
+        "created": "2025-11-23T19:36:51.939951+00:00",
+        "dismissed_version": null,
+        "domain": "hassio",
+        "is_persistent": false,
+        "issue_id": "15629cca3ed44a2e8f1a8d68b466b090"
+      },
+      {
+        "created": "2026-01-03T14:26:02.293522+00:00",
+        "dismissed_version": null,
+        "domain": "hassio",
+        "is_persistent": false,
+        "issue_id": "e4065d576c564d488882cfdfd30bfd4d"
+      },
+      {
+        "created": "2026-01-03T16:56:11.693616+00:00",
+        "dismissed_version": null,
+        "domain": "hassio",
+        "is_persistent": false,
+        "issue_id": "dabfaeae37cc4876b165a06895d4cab7"
+      },
+      {
+        "created": "2026-01-04T13:47:23.021625+00:00",
+        "dismissed_version": null,
+        "domain": "hassio",
+        "is_persistent": false,
+        "issue_id": "8bbeb60a1c3140ea940fb4cf2ad6f372"
+      },
+      {
+        "created": "2026-01-04T16:09:04.704202+00:00",
+        "dismissed_version": null,
+        "domain": "hassio",
+        "is_persistent": false,
+        "issue_id": "4b7610aab89b4a0288bb7ccf047b6c85"
+      },
+      {
+        "created": "2026-01-04T16:22:54.792271+00:00",
+        "dismissed_version": null,
+        "domain": "hassio",
+        "is_persistent": false,
+        "issue_id": "445fb909faee4803bc284a6e0380c45f"
+      },
+      {
+        "created": "2026-01-05T08:51:22.201858+00:00",
+        "dismissed_version": null,
+        "domain": "hassio",
+        "is_persistent": false,
+        "issue_id": "524b672f995e4fbeace6cdac691fafa0"
+      },
+      {
+        "created": "2026-01-05T17:13:39.987173+00:00",
+        "dismissed_version": null,
+        "domain": "hassio",
+        "is_persistent": false,
+        "issue_id": "a27ddab901f84aa6b0f035504c6ae7f5"
+      }
+    ]
+  }
+}
