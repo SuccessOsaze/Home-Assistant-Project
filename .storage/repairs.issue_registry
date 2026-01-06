@@ -66,6 +66,20 @@
         "domain": "hassio",
         "is_persistent": false,
         "issue_id": "a27ddab901f84aa6b0f035504c6ae7f5"
+      },
+      {
+        "created": "2026-01-05T18:47:26.745976+00:00",
+        "dismissed_version": null,
+        "domain": "hassio",
+        "is_persistent": false,
+        "issue_id": "5ad2a42bf393469193e475a30c6d2102"
+      },
+      {
+        "created": "2026-01-06T13:52:59.388771+00:00",
+        "dismissed_version": null,
+        "domain": "hassio",
+        "is_persistent": false,
+        "issue_id": "33ccab8a1dab4fb680f27558a700250f"
       }
     ]
   }

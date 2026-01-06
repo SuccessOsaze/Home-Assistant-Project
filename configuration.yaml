@@ -37,3 +37,26 @@ mqtt:
       state_topic: "test/plug/power"
       unit_of_measurement: "W"
       device_class: power
+
+# Input Boolean      
+input_boolean:
+  smart_plug_enable:
+    name: Smart Plug Enable
+    initial: on
+    icon: mdi:power-plug
+    
+  living_room_power_allowed:
+    name: Living Room Power Allowed
+    initial: off
+    icon: mdi:flash
+    
+  living_room_motion_enable:
+    name: Living Room Motion Enable
+    initial: on
+    icon: mdi:motion-sensor
+    
+  living_room_manual_mode:
+    name: Living Room Manual Mode
+    initial: off
+    icon: mdi:hand-back-right
+    
