@@ -1,6 +1,6 @@
 {
     "0xa4c1384da3ad1b38": {
-        "presence": false,
+        "presence": true,
         "motion_detection_sensitivity": 12,
         "illuminance": 0,
         "fading_time": 30,
