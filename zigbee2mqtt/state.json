@@ -1,17 +1,17 @@
 {
     "0xa4c1384da3ad1b38": {
-        "presence": true,
+        "presence": false,
         "motion_detection_sensitivity": 12,
         "illuminance": 0,
         "fading_time": 30,
         "illuminance_interval": 1,
-        "temperature": 32.1,
-        "humidity": 68,
+        "temperature": 32.4,
+        "humidity": 67,
         "indicator": "ON",
         "temperature_calibration": 0,
         "humidity_calibration": 0,
         "temperature_unit": "celsius",
-        "linkquality": 192,
+        "linkquality": 184,
         "battery": 100
     },
     "0x0c4314fffe54b110": {
@@ -24,14 +24,14 @@
     },
     "0xa4c138707147732e": {
         "state": "ON",
-        "brightness": 203,
-        "linkquality": 196,
+        "brightness": 229,
+        "linkquality": 156,
         "color_mode": "color_temp",
         "color": {
-            "x": 0.4152,
-            "y": 0.3954
+            "x": 0.3804,
+            "y": 0.3767
         },
-        "color_temp": 300,
+        "color_temp": 250,
         "level_config": {
             "on_level": "previous"
         }
