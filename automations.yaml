@@ -1,30 +1,32 @@
 #Virtual Automations (relevant for future testing)
-- alias: Virtual Motion Lights Test
-  description: "Turn on bulb when motion detected in dark conditions"
-  trigger:
-    - platform: state
-      entity_id: input_boolean.virtual_motion
-      to: 'on'
-  condition:
-    - condition: numeric_state
-      entity_id: input_number.virtual_lux
-      below: 100
-  action:
-    - service: light.turn_on
-      target:
-        entity_id: light.virtual_smart_bulb
-      data:
-        brightness_pct: 50
-        color_temp: 370
-    - service: notify.persistent_notification
-      data:
-        message: "Virtual motion detected! Bulb turned on at {{ now().strftime('%H:%M:%S') }}"
+# - id: "virtual_motion_lights_test"
+#   alias: Virtual Motion Lights Test
+#   description: "Turn on bulb when motion detected in dark conditions"
+#   trigger:
+#     - platform: state
+#       entity_id: input_boolean.virtual_motion
+#       to: 'on'
+#   condition:
+#     - condition: numeric_state
+#       entity_id: input_number.virtual_lux
+#       below: 100
+#   action:
+#     - service: light.turn_on
+#       target:
+#         entity_id: light.virtual_smart_bulb
+#       data:
+#         brightness_pct: 50
+#         color_temp: 370
+#     - service: notify.persistent_notification
+#       data:
+#         message: "Virtual motion detected! Bulb turned on at {{ now().strftime('%H:%M:%S') }}"
         
 
 # Real Device Automations 
 
-# Living Room Motion Lighting (UX Logic)
-- alias: Living Room Motion Lights
+#1. Living Room Motion Lighting (UX Logic)
+- id: "living_room_motion_light"
+  alias: Living Room Motion Light
   description: "Adaptive motion lighting with power-awareness"
   trigger:
     - platform: state
@@ -35,7 +37,7 @@
     - platform: state
       entity_id: binary_sensor.sensor_presence
       to: 'off'
-      for: "00:02:00"
+      for: "00:01:00"
       id: motion_off
 
   condition:
@@ -45,7 +47,7 @@
 
     - condition: numeric_state
       entity_id: sensor.sensor_illuminance
-      below: 100
+      below: 150
 
     - condition: state
       entity_id: sun.sun
@@ -78,7 +80,7 @@
                         entity_id: light.smart_bulb
                       data:
                         brightness_pct: 20
-                        color_temp: 420
+                        color_temp_kelvin: 420
                         transition: 2
 
                 # Evening
@@ -92,7 +94,7 @@
                         entity_id: light.smart_bulb
                       data:
                         brightness_pct: 60
-                        color_temp: 350
+                        color_temp_kelvin: 350
                         transition: 3
 
                 # Day fallback
@@ -106,7 +108,7 @@
                         entity_id: light.smart_bulb
                       data:
                         brightness_pct: 90
-                        color_temp: 250
+                        color_temp_kelvin: 250
                         transition: 3
 
             - service: system_log.write
@@ -129,11 +131,67 @@
 
   mode: restart              
 
-        
-        
-    
-        
-        
-        
-        
-        
+
+#2. Circadian Lighting Automation (Standalone)
+
+- id: "circadian_lighting"
+  alias: Living Room Circadian Lighting
+  description: "Continuously adapts light color and brightness based on sun position"
+  trigger:
+    - platform: time_pattern
+      minutes: "/02"   # every 2 minutes
+
+  condition:
+    - condition: state
+      entity_id: light.smart_bulb
+      state: 'on'
+
+    - condition: state
+      entity_id: input_boolean.living_room_power_allowed
+      state: 'on'
+
+    - condition: state
+      entity_id: input_boolean.living_room_manual_mode
+      state: 'off'
+
+  action:
+    - variables:
+        sun_elevation: "{{ state_attr('sun.sun', 'elevation') | float }}"
+        brightness: >
+          {% set elev = sun_elevation | float %}
+          {% if elev < -6 %}
+            20
+          {% elif elev < 0 %}
+            40
+          {% elif elev < 20 %}
+            70
+          {% else %}
+            90
+          {% endif %}
+        color_temp: >
+          {% set elev = sun_elevation | float %}
+          {% if elev < -6 %}
+            420
+          {% elif elev < 0 %}
+            370
+          {% elif elev < 20 %}
+            300
+          {% else %}
+            250
+          {% endif %}
+
+    - service: light.turn_on
+      target:
+        entity_id: light.smart_bulb
+      data:
+        brightness_pct: "{{ brightness }}"
+        color_temp_kelvin: "{{ color_temp }}"
+        transition: 15
+
+    - service: system_log.write
+      data:
+        level: info
+        message: >
+          Circadian update → brightness {{ brightness }}%, color_temp {{ color_temp }} (sun elevation {{ sun_elevation }} at {{ now().strftime('%H:%M:%S') }})
+
+  mode: single 

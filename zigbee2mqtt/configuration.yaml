@@ -45,17 +45,9 @@ frontend:
 homeassistant:
   enabled: true
 devices:
-  '0xa4c1384da3ad1b38':
-    friendly_name: Sensor
-    description: |-
-      4-in-1 Motion Mmwave Motion Sensor
-
-      Temperature
-      Humidity
-      Human Presence
-      Luminescence
-  '0x0c4314fffe54b110':
-    friendly_name: Smart_Plug
-    description: Smart Plug
   '0xa4c138707147732e':
     friendly_name: Smart_Bulb
+  '0xa4c1384da3ad1b38':
+    friendly_name: Sensor
+  '0x0c4314fffe54b110':
+    friendly_name: Smart Plug

@@ -46,6 +46,13 @@
             "should_expose": false
           }
         }
+      },
+      "automation.living_room_circadian_lighting": {
+        "assistants": {
+          "conversation": {
+            "should_expose": false
+          }
+        }
       }
     }
   }

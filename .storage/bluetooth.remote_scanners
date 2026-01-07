@@ -7,39 +7,14 @@
       "connectable": true,
       "expire_seconds": 195.0,
       "discovered_device_advertisement_datas": {
-        "01:43:A5:2B:D6:24": {
+        "2E:A6:63:0E:3A:24": {
           "device": {
-            "address": "01:43:A5:2B:D6:24",
-            "name": "Bn3034642",
-            "rssi": -95,
-            "details": {
-              "source": "E4:5F:01:2F:BD:B4",
-              "path": "/org/bluez/hci0/dev_01_43_A5_2B_D6_24",
-              "props": {
-                "Adapter": "/org/bluez/hci0"
-              }
-            }
-          },
-          "advertisement_data": {
-            "local_name": "Bn3034642",
-            "manufacturer_data": {},
-            "service_data": {},
-            "service_uuids": [
-              "00001812-0000-1000-8000-00805f9b34fb"
-            ],
-            "rssi": -95,
-            "tx_power": -127,
-            "platform_data": []
-          }
-        },
-        "15:79:EB:FB:90:F4": {
-          "device": {
-            "address": "15:79:EB:FB:90:F4",
+            "address": "2E:A6:63:0E:3A:24",
             "name": null,
-            "rssi": -44,
+            "rssi": -40,
             "details": {
               "source": "E4:5F:01:2F:BD:B4",
-              "path": "/org/bluez/hci0/dev_15_79_EB_FB_90_F4",
+              "path": "/org/bluez/hci0/dev_2E_A6_63_0E_3A_24",
               "props": {
                 "Adapter": "/org/bluez/hci0"
               }
@@ -48,50 +23,48 @@
           "advertisement_data": {
             "local_name": null,
             "manufacturer_data": {
-              "6": "01092022560ec4abde514b89e1a01a9ac05e94e818c4789e9f76fd"
+              "6": "01092022e8ce84627a4bbba523084ef0524e87ce4ddc6e0f78061d"
             },
             "service_data": {},
             "service_uuids": [],
-            "rssi": -44,
+            "rssi": -40,
             "tx_power": -127,
             "platform_data": []
           }
         },
-        "2A:01:CE:C0:99:3E": {
+        "BF:35:E5:81:20:81": {
           "device": {
-            "address": "2A:01:CE:C0:99:3E",
-            "name": null,
-            "rssi": -42,
+            "address": "BF:35:E5:81:20:81",
+            "name": " ",
+            "rssi": -45,
             "details": {
               "source": "E4:5F:01:2F:BD:B4",
-              "path": "/org/bluez/hci0/dev_2A_01_CE_C0_99_3E",
+              "path": "/org/bluez/hci0/dev_BF_35_E5_81_20_81",
               "props": {
                 "Adapter": "/org/bluez/hci0"
               }
             }
           },
           "advertisement_data": {
-            "local_name": null,
+            "local_name": " ",
             "manufacturer_data": {
-              "6": "01092022b9b6e98613566787722a29bebb8a20e62e53ace51776fe"
+              "2370": "410330129848500bd6010000000000000000000000000000000000"
             },
             "service_data": {},
             "service_uuids": [],
-            "rssi": -42,
+            "rssi": -45,
             "tx_power": -127,
             "platform_data": []
           }
         }
       },
       "discovered_device_timestamps": {
-        "01:43:A5:2B:D6:24": 1767606129.5360923,
-        "15:79:EB:FB:90:F4": 1767606072.3470452,
-        "2A:01:CE:C0:99:3E": 1767606135.9317596
+        "2E:A6:63:0E:3A:24": 1767740289.805945,
+        "BF:35:E5:81:20:81": 1767740289.4259436
       },
       "discovered_device_raw": {
-        "01:43:A5:2B:D6:24": "0201060319c003030212180a09426e33303334363432",
-        "15:79:EB:FB:90:F4": "1eff060001092022560ec4abde514b89e1a01a9ac05e94e818c4789e9f76fd",
-        "2A:01:CE:C0:99:3E": "1eff060001092022b9b6e98613566787722a29bebb8a20e62e53ace51776fe"
+        "2E:A6:63:0E:3A:24": "1eff060001092022e8ce84627a4bbba523084ef0524e87ce4ddc6e0f78061d",
+        "BF:35:E5:81:20:81": "1eff4209410330129848500bd6010000000000000000000000000000000000020106020920"
       }
     }
   }

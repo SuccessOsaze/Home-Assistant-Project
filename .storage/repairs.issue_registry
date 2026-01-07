@@ -80,6 +80,13 @@
         "domain": "hassio",
         "is_persistent": false,
         "issue_id": "33ccab8a1dab4fb680f27558a700250f"
+      },
+      {
+        "created": "2026-01-06T19:58:35.269434+00:00",
+        "dismissed_version": null,
+        "domain": "hassio",
+        "is_persistent": false,
+        "issue_id": "ef70abe11b7249cfa1ae4ab1e1224ea6"
       }
     ]
   }
