@@ -50,4 +50,4 @@ devices:
   '0xa4c1384da3ad1b38':
     friendly_name: Sensor
   '0x0c4314fffe54b110':
-    friendly_name: Smart Plug
+    friendly_name: Smart_Plug

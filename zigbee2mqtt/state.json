@@ -2,7 +2,7 @@
     "0xa4c138707147732e": {
         "state": "ON",
         "brightness": 229,
-        "linkquality": 180,
+        "linkquality": 176,
         "color_mode": "color_temp",
         "color": {
             "x": 0.5267,
@@ -14,7 +14,7 @@
         }
     },
     "0xa4c1384da3ad1b38": {
-        "illuminance": 81,
+        "illuminance": 128,
         "presence": true,
         "motion_detection_sensitivity": 14,
         "fading_time": 30,
@@ -25,16 +25,16 @@
         "temperature_calibration": 0,
         "humidity_calibration": 0,
         "temperature_unit": "celsius",
-        "linkquality": 244,
+        "linkquality": 255,
         "battery": 100
     },
     "0x0c4314fffe54b110": {
         "state": "ON",
-        "power": 8,
-        "current": 0.08,
-        "voltage": 274,
-        "energy": 0,
+        "power": 15,
+        "current": 0.12,
+        "voltage": 272,
+        "energy": 0.01,
         "countdown": 0,
-        "linkquality": 240
+        "linkquality": 255
     }
 }

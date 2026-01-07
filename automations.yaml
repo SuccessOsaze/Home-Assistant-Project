@@ -24,7 +24,83 @@
 
 # Real Device Automations 
 
-#1. Living Room Motion Lighting (UX Logic)
+#1. Smart Plug Logic (Living Room Power Policy)
+
+- alias: Living Room Power Policy
+  description: "Controls power availability based on motion, load, and schedule"
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.smart_plug_power
+      below: 5
+      for: "00:02:00"
+      id: low_power
+
+    - platform: state
+      entity_id: binary_sensor.sensor_presence
+      to: 'off'
+      for: "00:02:00"
+      id: no_motion
+
+    - platform: sun
+      event: sunset
+      id: on_time
+
+    - platform: time
+      at: "23:00:00"
+      id: off_time
+
+  condition:
+    - condition: state
+      entity_id: input_boolean.smart_plug_enable
+      state: 'on'
+
+  action:
+    - choose:
+        # ─── DISALLOW POWER ───
+        - conditions:
+          - condition: or
+            conditions:
+              - condition: trigger
+                id: low_power
+              - condition: trigger
+                id: no_motion
+              - condition: trigger
+                id: off_time
+          sequence:
+            - service: input_boolean.turn_off
+              target:
+                entity_id: input_boolean.living_room_power_allowed
+
+            - service: switch.turn_off
+              target:
+                entity_id: switch.smart_plug
+
+            - service: system_log.write
+              data:
+                level: info
+                message: "Living room power DISABLED due to {{ trigger.id }}"
+
+        # ─── ALLOW POWER ───
+        - conditions:
+            - condition: trigger
+              id: on_time
+          sequence:
+            - service: input_boolean.turn_on
+              target:
+                entity_id: input_boolean.living_room_power_allowed
+
+            - service: switch.turn_on
+              target:
+                entity_id: switch.smart_plug
+
+            - service: system_log.write
+              data:
+                level: info
+                message: "Living room power ENABLED at sunset"
+
+  mode: queued
+
+#2. Living Room Motion Lighting (UX Logic)
 - id: "living_room_motion_light"
   alias: Living Room Motion Light
   description: "Adaptive motion lighting with power-awareness"
@@ -132,7 +208,7 @@
   mode: restart              
 
 
-#2. Circadian Lighting Automation (Standalone)
+#3. Circadian Lighting Automation (Standalone)
 
 - id: "circadian_lighting"
   alias: Living Room Circadian Lighting
