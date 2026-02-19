@@ -1,20 +1,20 @@
 {
     "0xa4c138707147732e": {
         "state": "ON",
-        "brightness": 230,
+        "brightness": 229,
         "linkquality": 112,
-        "color_mode": "xy",
+        "color_mode": "color_temp",
         "color": {
-            "x": 0.33333333333333326,
-            "y": 0.3333333333333333
+            "x": 0.5267,
+            "y": 0.4133
         },
-        "color_temp": 183,
+        "color_temp": 500,
         "level_config": {
             "on_level": "previous"
         }
     },
     "0xa4c1384da3ad1b38": {
-        "illuminance": 209,
+        "illuminance": 136,
         "presence": true,
         "motion_detection_sensitivity": 14,
         "fading_time": 30,
@@ -32,7 +32,7 @@
         "state": "OFF",
         "power": 0,
         "current": 0,
-        "voltage": 231,
+        "voltage": 232,
         "energy": 0,
         "countdown": 0,
         "linkquality": 255,

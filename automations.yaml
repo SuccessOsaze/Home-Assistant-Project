@@ -22,10 +22,6 @@
 #         message: "Virtual motion detected! Bulb turned on at {{ now().strftime('%H:%M:%S') }}"
         
 
-# Real Device Automations 
-
-#1. Smart Plug Logic (Living Room Power Policy)
-
 # ─────────────────────────────────────────────────────────────
 # REQUIRED HELPERS — declare these in configuration.yaml first
 # ─────────────────────────────────────────────────────────────
@@ -48,7 +44,10 @@
 #     icon: mdi:hand-back-right
 # ─────────────────────────────────────────────────────────────
 
-# 1. Living Room Power Policy
+
+# ═══════════════════════════════════════════════════════════════
+# 1. LIVING ROOM POWER POLICY
+# ═══════════════════════════════════════════════════════════════
 - alias: Living Room Power Policy
   description: "Controls power availability based on motion, load, and schedule"
   trigger:
@@ -64,8 +63,7 @@
       for: "00:02:00"
       id: no_motion
 
-    # FIX: Added presence-back trigger so power re-enables when someone
-    # returns during the active window (sunset → 23:00), not just at sunset.
+    # Re-enables power when someone returns during the active window
     - platform: state
       entity_id: binary_sensor.sensor_presence
       to: 'on'
@@ -108,7 +106,6 @@
             - service: system_log.write
               data:
                 level: info
-                # FIX: Inline trigger.id directly — no variables block needed
                 message: "Living room power DISABLED due to {{ trigger.id }}"
 
         # ─── ALLOW POWER (sunset) ───
@@ -130,13 +127,12 @@
                 message: "Living room power ENABLED at sunset"
 
         # ─── ALLOW POWER (presence returned within active window) ───
-        # FIX: Re-enable power if someone comes home between sunset and 23:00
         - conditions:
             - condition: trigger
               id: motion_returned
             - condition: sun
               which: sunset
-              before: "00:00:00"    # after sunset has already passed today
+              before: "00:00:00"
             - condition: time
               before: "23:00:00"
           sequence:
@@ -156,7 +152,9 @@
   mode: queued
 
 
-# 2. Living Room Motion Lighting (UX Logic)
+# ═══════════════════════════════════════════════════════════════
+# 2. LIVING ROOM MOTION LIGHTING
+# ═══════════════════════════════════════════════════════════════
 - id: "living_room_motion_light"
   alias: Living Room Motion Light
   description: "Adaptive motion lighting with power-awareness"
@@ -181,9 +179,8 @@
       entity_id: sensor.sensor_illuminance
       below: 150
 
-    # FIX: Removed the sun.sun state condition entirely.
-    # It was a test artifact that blocked motion lighting after dark
-    # (when sun is below_horizon), which is exactly when it's most needed.
+    # sun.sun state condition removed — it was a test artifact that
+    # blocked motion lighting at night when it is most needed.
 
     - condition: state
       entity_id: input_boolean.living_room_motion_enable
@@ -201,7 +198,7 @@
               id: motion_on
           sequence:
             - choose:
-                # Night (23:00–06:00) — warm, dim for sleep
+                # Night (23:00–06:00) — warm amber, dim for sleep
                 - conditions:
                     - condition: time
                       after: "23:00:00"
@@ -212,8 +209,6 @@
                         entity_id: light.smart_bulb
                       data:
                         brightness_pct: 20
-                        # FIX: Was 420K (cool/blue). Changed to 2200K — warm amber
-                        # for night time, better for sleep and human circadian rhythm.
                         color_temp_kelvin: 2200
                         transition: 2
 
@@ -228,11 +223,10 @@
                         entity_id: light.smart_bulb
                       data:
                         brightness_pct: 60
-                        # FIX: Was 350K. Changed to 3000K — warm white for evening
                         color_temp_kelvin: 3000
                         transition: 3
 
-                # Day (06:00–18:00) — cool white, full brightness
+                # Day (06:00–18:00) — cool daylight, full brightness
                 - conditions:
                     - condition: time
                       after: "06:00:00"
@@ -243,7 +237,6 @@
                         entity_id: light.smart_bulb
                       data:
                         brightness_pct: 90
-                        # FIX: Was 250K. Changed to 5000K — cool daylight white
                         color_temp_kelvin: 5000
                         transition: 3
 
@@ -266,17 +259,20 @@
                 level: info
                 message: "Motion lighting turned off — Light turned OFF at {{ now().strftime('%H:%M:%S') }}"
 
-  mode: restart              
+  mode: restart
 
 
-# 3. Circadian Lighting Automation (Standalone)
-
+# ═══════════════════════════════════════════════════════════════
+# 3. CIRCADIAN LIGHTING
+# ═══════════════════════════════════════════════════════════════
 - id: "circadian_lighting"
   alias: Living Room Circadian Lighting
-  description: "Continuously adapts light color and brightness based on sun position"
+  description: "Continuously adapts light color and brightness based on sun position.
+    Yields control to motion lighting while presence is actively detected, resuming
+    2 minutes after the room becomes empty so both automations stay in sync."
   trigger:
     - platform: time_pattern
-      minutes: "/02"   # every 2 minutes
+      minutes: "/2"
 
   condition:
     - condition: state
@@ -291,11 +287,22 @@
       entity_id: input_boolean.living_room_manual_mode
       state: 'off'
 
+    # ─── PRESENCE GUARD ───
+    # Prevents circadian updates from overwriting motion lighting values
+    # while someone is actively in the room. Circadian resumes automatically
+    # once the presence sensor has been 'off' for 2 minutes — matching the
+    # same hold time used by automation #1 (no_motion trigger).
+    - condition: state
+      entity_id: binary_sensor.sensor_presence
+      state: 'off'
+      for: "00:02:00"
+
   action:
     - variables:
         sun_elevation: "{{ state_attr('sun.sun', 'elevation') | float }}"
+        # Brightness steps by sun elevation (degrees above/below horizon)
         brightness: >
-          {% set elev = sun_elevation | float %}
+          {% set elev = sun_elevation %}
           {% if elev < -6 %}
             20
           {% elif elev < 0 %}
@@ -305,16 +312,19 @@
           {% else %}
             90
           {% endif %}
+        # Color temperature in Kelvin — corrected to valid bulb range.
+        # Higher Kelvin = cooler/bluer (daytime).
+        # Lower Kelvin  = warmer/amber (night, sleep-friendly).
         color_temp: >
-          {% set elev = sun_elevation | float %}
+          {% set elev = sun_elevation %}
           {% if elev < -6 %}
-            420
+            2200
           {% elif elev < 0 %}
-            370
+            2700
           {% elif elev < 20 %}
-            300
+            3500
           {% else %}
-            250
+            5000
           {% endif %}
 
     - service: light.turn_on
@@ -329,6 +339,7 @@
       data:
         level: info
         message: >
-          Circadian update → brightness {{ brightness }}%, color_temp {{ color_temp }} (sun elevation {{ sun_elevation }} at {{ now().strftime('%H:%M:%S') }})
+          Circadian update → brightness {{ brightness }}%, color_temp {{ color_temp }}K
+          (sun elevation {{ sun_elevation }}°) at {{ now().strftime('%H:%M:%S') }}
 
-  mode: single 
+  mode: single
