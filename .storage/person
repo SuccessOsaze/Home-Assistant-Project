@@ -8,7 +8,9 @@
         "id": "home_automation_project",
         "name": "Home Automation Project",
         "user_id": "088674db65ab4a7d9a3268b05563b242",
-        "device_trackers": []
+        "device_trackers": [
+          "device_tracker.23106rn0da"
+        ]
       }
     ]
   }

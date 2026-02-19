@@ -26,6 +26,29 @@
 
 #1. Smart Plug Logic (Living Room Power Policy)
 
+# ─────────────────────────────────────────────────────────────
+# REQUIRED HELPERS — declare these in configuration.yaml first
+# ─────────────────────────────────────────────────────────────
+# input_boolean:
+#   smart_plug_enable:
+#     name: Smart Plug Enable
+#     initial: on
+#     icon: mdi:power
+#   living_room_power_allowed:
+#     name: Living Room Power Allowed
+#     initial: off
+#     icon: mdi:home-lightning-bolt
+#   living_room_motion_enable:
+#     name: Living Room Motion Enable
+#     initial: on
+#     icon: mdi:motion-sensor
+#   living_room_manual_mode:
+#     name: Living Room Manual Mode
+#     initial: off
+#     icon: mdi:hand-back-right
+# ─────────────────────────────────────────────────────────────
+
+# 1. Living Room Power Policy
 - alias: Living Room Power Policy
   description: "Controls power availability based on motion, load, and schedule"
   trigger:
@@ -40,6 +63,13 @@
       to: 'off'
       for: "00:02:00"
       id: no_motion
+
+    # FIX: Added presence-back trigger so power re-enables when someone
+    # returns during the active window (sunset → 23:00), not just at sunset.
+    - platform: state
+      entity_id: binary_sensor.sensor_presence
+      to: 'on'
+      id: motion_returned
 
     - platform: sun
       event: sunset
@@ -58,14 +88,14 @@
     - choose:
         # ─── DISALLOW POWER ───
         - conditions:
-          - condition: or
-            conditions:
-              - condition: trigger
-                id: low_power
-              - condition: trigger
-                id: no_motion
-              - condition: trigger
-                id: off_time
+            - condition: or
+              conditions:
+                - condition: trigger
+                  id: low_power
+                - condition: trigger
+                  id: no_motion
+                - condition: trigger
+                  id: off_time
           sequence:
             - service: input_boolean.turn_off
               target:
@@ -78,9 +108,10 @@
             - service: system_log.write
               data:
                 level: info
+                # FIX: Inline trigger.id directly — no variables block needed
                 message: "Living room power DISABLED due to {{ trigger.id }}"
 
-        # ─── ALLOW POWER ───
+        # ─── ALLOW POWER (sunset) ───
         - conditions:
             - condition: trigger
               id: on_time
@@ -98,9 +129,34 @@
                 level: info
                 message: "Living room power ENABLED at sunset"
 
+        # ─── ALLOW POWER (presence returned within active window) ───
+        # FIX: Re-enable power if someone comes home between sunset and 23:00
+        - conditions:
+            - condition: trigger
+              id: motion_returned
+            - condition: sun
+              which: sunset
+              before: "00:00:00"    # after sunset has already passed today
+            - condition: time
+              before: "23:00:00"
+          sequence:
+            - service: input_boolean.turn_on
+              target:
+                entity_id: input_boolean.living_room_power_allowed
+
+            - service: switch.turn_on
+              target:
+                entity_id: switch.smart_plug
+
+            - service: system_log.write
+              data:
+                level: info
+                message: "Living room power RE-ENABLED due to presence returning"
+
   mode: queued
 
-#2. Living Room Motion Lighting (UX Logic)
+
+# 2. Living Room Motion Lighting (UX Logic)
 - id: "living_room_motion_light"
   alias: Living Room Motion Light
   description: "Adaptive motion lighting with power-awareness"
@@ -125,9 +181,9 @@
       entity_id: sensor.sensor_illuminance
       below: 150
 
-    - condition: state
-      entity_id: sun.sun
-      state: 'above_horizon'    # switch between "above_horizon" & "below_horizon" to test the code at day (or night) time.
+    # FIX: Removed the sun.sun state condition entirely.
+    # It was a test artifact that blocked motion lighting after dark
+    # (when sun is below_horizon), which is exactly when it's most needed.
 
     - condition: state
       entity_id: input_boolean.living_room_motion_enable
@@ -145,7 +201,7 @@
               id: motion_on
           sequence:
             - choose:
-                # Night
+                # Night (23:00–06:00) — warm, dim for sleep
                 - conditions:
                     - condition: time
                       after: "23:00:00"
@@ -156,10 +212,12 @@
                         entity_id: light.smart_bulb
                       data:
                         brightness_pct: 20
-                        color_temp_kelvin: 420
+                        # FIX: Was 420K (cool/blue). Changed to 2200K — warm amber
+                        # for night time, better for sleep and human circadian rhythm.
+                        color_temp_kelvin: 2200
                         transition: 2
 
-                # Evening
+                # Evening (18:00–23:00) — warm white, moderate brightness
                 - conditions:
                     - condition: time
                       after: "18:00:00"
@@ -170,10 +228,11 @@
                         entity_id: light.smart_bulb
                       data:
                         brightness_pct: 60
-                        color_temp_kelvin: 350
+                        # FIX: Was 350K. Changed to 3000K — warm white for evening
+                        color_temp_kelvin: 3000
                         transition: 3
 
-                # Day fallback
+                # Day (06:00–18:00) — cool white, full brightness
                 - conditions:
                     - condition: time
                       after: "06:00:00"
@@ -184,13 +243,14 @@
                         entity_id: light.smart_bulb
                       data:
                         brightness_pct: 90
-                        color_temp_kelvin: 250
+                        # FIX: Was 250K. Changed to 5000K — cool daylight white
+                        color_temp_kelvin: 5000
                         transition: 3
 
             - service: system_log.write
               data:
                 level: info
-                message: "Motion lighting activated Light turned ON at {{ now().strftime('%H:%M:%S') }}"
+                message: "Motion lighting activated — Light turned ON at {{ now().strftime('%H:%M:%S') }}"
 
         # ─── MOTION CLEARED ───
         - conditions:
@@ -200,15 +260,16 @@
             - service: light.turn_off
               target:
                 entity_id: light.smart_bulb
+
             - service: system_log.write
               data:
                 level: info
-                message: "Motion lighting turned off Light turned OFF at {{ now().strftime('%H:%M:%S') }}"
+                message: "Motion lighting turned off — Light turned OFF at {{ now().strftime('%H:%M:%S') }}"
 
   mode: restart              
 
 
-#3. Circadian Lighting Automation (Standalone)
+# 3. Circadian Lighting Automation (Standalone)
 
 - id: "circadian_lighting"
   alias: Living Room Circadian Lighting

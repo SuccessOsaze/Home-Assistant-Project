@@ -92,7 +92,7 @@
         "access_token_expiration": 1800.0,
         "token": "f7205ed9481d42ea9aea5952761df60352a56378f4e6be2eb12b3451c0932aae07148a499ef52a7858d25012af512aa9111748504f285a3a023366582c161fc2",
         "jwt_key": "0035b366efe00cdf4af47d2efb17e0a5174a7b78a840eb6810b0a7615056befb1317601bad7d91296fabb7644ee3fdf6a9d3556793e2cd924a2d923101180c71",
-        "last_used_at": "2026-01-07T11:03:08.958575+00:00",
+        "last_used_at": "2026-02-19T14:51:22.342775+00:00",
         "last_used_ip": "172.30.32.2",
         "expire_at": null,
         "credential_id": null,
@@ -109,11 +109,28 @@
         "access_token_expiration": 1800.0,
         "token": "af42aebbecffb3d344b2848ca9080352c52a139eef3a825a8f2d11b11b6d87fc60a3a8ccf05f8c2b48d7659a8ebe3e59837a28ad05c518f03531e650ca30b819",
         "jwt_key": "b6ebb75bcb6a43c6472a1eb5d6a5146ef9f8a2345958401a02c7e3acd68e2e57546336378299145c7a23075a70bf1632cff9d5bf490f2979911855eead6344b7",
-        "last_used_at": "2026-01-07T10:58:38.815147+00:00",
-        "last_used_ip": "10.214.190.145",
-        "expire_at": 1775559518.815147,
+        "last_used_at": "2026-02-19T14:46:12.222881+00:00",
+        "last_used_ip": "172.20.170.145",
+        "expire_at": 1779288372.222881,
         "credential_id": "e6dd09ef8cd4459ab9d0eacc4175d0cd",
         "version": "2025.7.4"
+      },
+      {
+        "id": "cb57c4609f914a03afc0783cc6f057a2",
+        "user_id": "088674db65ab4a7d9a3268b05563b242",
+        "client_id": "https://home-assistant.io/android",
+        "client_name": null,
+        "client_icon": null,
+        "token_type": "normal",
+        "created_at": "2026-01-14T11:15:36.073939+00:00",
+        "access_token_expiration": 1800.0,
+        "token": "c9695f6b518cf0dd6586bb9d9bd417e280c0829f4278b064ec85ae39ff9966a31a8e6578105c60dcf9c37aef2b0505340522489642526d2b158541ed711ced31",
+        "jwt_key": "5e26170fdbb16fc220630ae38a1b5a0e39d1d728b9c1cfc537b0c62b70859c5570caa7937522ad9b0644cf11b56eef305175053d882fc80cdf0d509e9eb42c4e",
+        "last_used_at": "2026-01-16T10:47:37.414985+00:00",
+        "last_used_ip": "10.176.40.253",
+        "expire_at": 1776336457.414985,
+        "credential_id": "e6dd09ef8cd4459ab9d0eacc4175d0cd",
+        "version": "2025.11.2"
       }
     ]
   }

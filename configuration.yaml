@@ -47,7 +47,7 @@ input_boolean:
     
   living_room_power_allowed:
     name: Living Room Power Allowed
-    initial: off
+    initial: on
     icon: mdi:flash
     
   living_room_motion_enable:
@@ -59,4 +59,8 @@ input_boolean:
     name: Living Room Manual Mode
     initial: off
     icon: mdi:hand-back-right
-    
+
+  test_smart_plug_policy:
+    name: Smart Plug Policy Test
+    initial: off
+    icon: mdi:test-tube

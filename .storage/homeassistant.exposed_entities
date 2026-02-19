@@ -53,6 +53,13 @@
             "should_expose": false
           }
         }
+      },
+      "automation.living_room_power_policy": {
+        "assistants": {
+          "conversation": {
+            "should_expose": false
+          }
+        }
       }
     }
   }

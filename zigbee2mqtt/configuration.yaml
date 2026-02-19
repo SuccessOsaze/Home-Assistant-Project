@@ -51,3 +51,5 @@ devices:
     friendly_name: Sensor
   '0x0c4314fffe54b110':
     friendly_name: Smart_Plug
+availability:
+  enabled: true
