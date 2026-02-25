@@ -127,12 +127,15 @@
                 message: "Living room power ENABLED at sunset"
 
         # ─── ALLOW POWER (presence returned within active window) ───
+        # Replaces the invalid 'condition: sun / which: sunset' syntax which
+        # is not supported in action conditions. Instead we check whether the
+        # sun is currently below the horizon using state_attr, which is valid
+        # everywhere in HA templates, combined with a time check for 23:00.
         - conditions:
             - condition: trigger
               id: motion_returned
-            - condition: sun
-              which: sunset
-              before: "00:00:00"
+            - condition: template
+              value_template: "{{ state_attr('sun.sun', 'elevation') | float < 0 }}"
             - condition: time
               before: "23:00:00"
           sequence:
@@ -243,7 +246,7 @@
             - service: system_log.write
               data:
                 level: info
-                message: "Motion lighting activated — Light turned ON at {{ now().strftime('%H:%M:%S') }}"
+                message: "Motion lighting activated - Light turned ON at {{ now().strftime('%H:%M:%S') }}"
 
         # ─── MOTION CLEARED ───
         - conditions:
@@ -257,7 +260,7 @@
             - service: system_log.write
               data:
                 level: info
-                message: "Motion lighting turned off — Light turned OFF at {{ now().strftime('%H:%M:%S') }}"
+                message: "Motion lighting turned off - Light turned OFF at {{ now().strftime('%H:%M:%S') }}"
 
   mode: restart
 
@@ -288,21 +291,23 @@
       state: 'off'
 
     # ─── PRESENCE GUARD ───
-    # Prevents circadian updates from overwriting motion lighting values
-    # while someone is actively in the room. Circadian resumes automatically
-    # once the presence sensor has been 'off' for 2 minutes — matching the
-    # same hold time used by automation #1 (no_motion trigger).
+    # Circadian should run WHILE someone is in the room, not when it's empty.
+    # However, we give motion lighting (#2) a 3-minute head start after someone
+    # enters before circadian begins overriding its initial values. This prevents
+    # the two automations from fighting on entry while still allowing circadian
+    # to smoothly adapt the light during an extended stay.
     - condition: state
       entity_id: binary_sensor.sensor_presence
-      state: 'off'
-      for: "00:02:00"
+      state: 'on'
+      for: "00:03:00"
 
   action:
-    - variables:
-        sun_elevation: "{{ state_attr('sun.sun', 'elevation') | float }}"
-        # Brightness steps by sun elevation (degrees above/below horizon)
-        brightness: >
-          {% set elev = sun_elevation %}
+    - service: light.turn_on
+      target:
+        entity_id: light.smart_bulb
+      data:
+        brightness_pct: >
+          {% set elev = state_attr('sun.sun', 'elevation') | float %}
           {% if elev < -6 %}
             20
           {% elif elev < 0 %}
@@ -312,11 +317,8 @@
           {% else %}
             90
           {% endif %}
-        # Color temperature in Kelvin — corrected to valid bulb range.
-        # Higher Kelvin = cooler/bluer (daytime).
-        # Lower Kelvin  = warmer/amber (night, sleep-friendly).
-        color_temp: >
-          {% set elev = sun_elevation %}
+        color_temp_kelvin: >
+          {% set elev = state_attr('sun.sun', 'elevation') | float %}
           {% if elev < -6 %}
             2200
           {% elif elev < 0 %}
@@ -326,20 +328,14 @@
           {% else %}
             5000
           {% endif %}
-
-    - service: light.turn_on
-      target:
-        entity_id: light.smart_bulb
-      data:
-        brightness_pct: "{{ brightness }}"
-        color_temp_kelvin: "{{ color_temp }}"
         transition: 15
 
     - service: system_log.write
       data:
         level: info
         message: >
-          Circadian update → brightness {{ brightness }}%, color_temp {{ color_temp }}K
-          (sun elevation {{ sun_elevation }}°) at {{ now().strftime('%H:%M:%S') }}
+          Circadian update - brightness {{ brightness }}%, color_temp {{ color_temp }}K
+          (sun elevation {{ state_attr('sun.sun', 'elevation') | float }}deg)
+          at {{ now().strftime('%H:%M:%S') }}
 
   mode: single

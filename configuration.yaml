@@ -10,6 +10,12 @@ automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 
+#Logs level
+logger:
+  default: warning
+  logs:
+    homeassistant.components.automation: info
+
 # Virtual MQTT Devices for Testing
 mqtt:
   switch:
@@ -38,29 +44,122 @@ mqtt:
       unit_of_measurement: "W"
       device_class: power
 
+#Link Quality Indicator for my 3 devices
+    - name: "Smart Bulb Linkquality"
+      state_topic: "zigbee2mqtt/Smart_Bulb"
+      value_template: "{{ value_json.linkquality }}"
+      unit_of_measurement: "lqi"
+      icon: "mdi:signal"
+      availability_topic: "zigbee2mqtt/bridge/state"
+      payload_available: "online"
+      payload_not_available: "offline"
+
+    # - name: "Smart Plug Linkquality"
+    #   state_topic: "zigbee2mqtt/Smart_Plug"
+    #   value_template: "{{ value_json.linkquality }}"
+    #   unit_of_measurement: "lqi"
+    #   icon: "mdi:signal"
+    #   availability_topic: "zigbee2mqtt/bridge/state"
+    #   payload_available: "online"
+    #   payload_not_available: "offline"
+
+    - name: "Sensor Linkquality"
+      state_topic: "zigbee2mqtt/Sensor"
+      value_template: "{{ value_json.linkquality }}"
+      unit_of_measurement: "lqi"
+      icon: "mdi:signal"
+      availability_topic: "zigbee2mqtt/bridge/state"
+      payload_available: "online"
+      payload_not_available: "offline"
+
 # Input Boolean      
 input_boolean:
   smart_plug_enable:
     name: Smart Plug Enable
-    initial: on
+    initial: true
     icon: mdi:power-plug
     
   living_room_power_allowed:
     name: Living Room Power Allowed
-    initial: on
+    initial: true
     icon: mdi:flash
     
   living_room_motion_enable:
     name: Living Room Motion Enable
-    initial: on
+    initial: true
     icon: mdi:motion-sensor
     
   living_room_manual_mode:
     name: Living Room Manual Mode
-    initial: off
+    initial: false
     icon: mdi:hand-back-right
 
   test_smart_plug_policy:
     name: Smart Plug Policy Test
-    initial: off
+    initial: false
     icon: mdi:test-tube
+
+
+#InfluxDB Integration
+influxdb:
+  host: localhost               # or 127.0.0.1 – preferred over IP for local add-on
+  port: 8086
+  database: homeassistant       # must exist in InfluxDB
+  username: myhome
+  password: dromoifo
+  max_retries: 3
+  ssl: false                    # add-on doesn't use HTTPS by default
+  default_measurement: state    # good choice; keeps entity_id as measurement if you want, or use 'value' for more compact storage
+  include:
+    entity_globs:
+      - sensor.*linkquality
+      - sensor.*linkquality_2
+      - sensor.*last_seen
+      - binary_sensor.*online
+      - sensor.system_monitor_*   # ← Add this
+      - sensor.processor_*        # or sensor.memory_*
+      - sensor.cpu_*              # depending on exact names
+  tags_attributes:
+      - friendly_name
+
+#Last Seen Timestamp
+template:
+  - binary_sensor:
+      - name: "Smart Bulb Online"
+        unique_id: binary_sensor.smart_bulb_online
+        device_class: connectivity
+        state: >-
+          {% set ls = states('sensor.smart_bulb_last_seen') %}
+          {% if ls in ['unknown', 'unavailable', None, ''] %}
+            off
+          {% else %}
+            {{ (now().timestamp() - as_timestamp(ls)) < 600 }}
+          {% endif %}
+        availability: >-
+          {{ states('sensor.smart_bulb_last_seen') not in ['unknown', 'unavailable', None, ''] }}
+
+      - name: "Smart Plug Online"
+        unique_id: binary_sensor.smart_plug_online
+        device_class: connectivity
+        state: >-
+          {% set ls = states('sensor.smart_plug_last_seen') %}
+          {% if ls in ['unknown', 'unavailable', None, ''] %}
+            off
+          {% else %}
+            {{ (now().timestamp() - as_timestamp(ls)) < 600 }}
+          {% endif %}
+        availability: >-
+          {{ states('sensor.smart_plug_last_seen') not in ['unknown', 'unavailable', None, ''] }}
+
+      - name: "Motion Sensor Online"
+        unique_id: binary_sensor.motion_sensor_online
+        device_class: connectivity
+        state: >-
+          {% set ls = states('sensor.sensor_last_seen') %}
+          {% if ls in ['unknown', 'unavailable', None, ''] %}
+            off
+          {% else %}
+            {{ (now().timestamp() - as_timestamp(ls)) < 3600 }}
+          {% endif %}
+        availability: >-
+          {{ states('sensor.sensor_last_seen') not in ['unknown', 'unavailable', None, ''] }}
