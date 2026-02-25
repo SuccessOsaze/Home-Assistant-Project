@@ -1,40 +1,43 @@
 {
     "0xa4c138707147732e": {
         "state": "ON",
-        "brightness": 229,
-        "linkquality": 112,
+        "brightness": 152,
+        "linkquality": 204,
         "color_mode": "color_temp",
         "color": {
-            "x": 0.5267,
-            "y": 0.4133
+            "x": 0.4369,
+            "y": 0.4041
         },
-        "color_temp": 500,
+        "color_temp": 333,
         "level_config": {
             "on_level": "previous"
-        }
+        },
+        "last_seen": "2026-02-25T16:42:56.524Z"
     },
     "0xa4c1384da3ad1b38": {
-        "illuminance": 136,
         "presence": true,
-        "motion_detection_sensitivity": 14,
-        "fading_time": 30,
+        "illuminance": 0,
+        "motion_detection_sensitivity": 7,
+        "fading_time": 60,
         "illuminance_interval": 1,
-        "temperature": 31.2,
-        "humidity": 68,
         "indicator": "ON",
+        "temperature": 31,
+        "humidity": 70,
         "temperature_calibration": 0,
         "humidity_calibration": 0,
         "temperature_unit": "celsius",
-        "linkquality": 212,
-        "battery": 100
+        "linkquality": 255,
+        "battery": 100,
+        "last_seen": "2026-02-25T16:43:07.913Z"
     },
     "0x0c4314fffe54b110": {
-        "state": "OFF",
-        "power": 0,
-        "current": 0,
-        "voltage": 232,
-        "energy": 0,
+        "state": "ON",
         "countdown": 0,
+        "power": 20,
+        "current": 0.15,
+        "voltage": 249,
+        "energy": 0,
+        "last_seen": "2026-02-25T16:43:27.361Z",
         "linkquality": 255,
         "child_lock": "UNLOCK"
     }

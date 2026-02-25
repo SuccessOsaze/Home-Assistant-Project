@@ -6,13 +6,13 @@
     "automation.circadian_lighting": [
       {
         "extended_dict": {
-          "last_step": "condition/0/entity_id/0",
-          "run_id": "25cdee6c50dec36346ad08d79cf904ca",
+          "last_step": "condition/3/entity_id/0",
+          "run_id": "1b7376d9ae42c9626dc649c3632de5d3",
           "state": "stopped",
           "script_execution": "failed_conditions",
           "timestamp": {
-            "start": "2026-01-15T21:18:00.323365+00:00",
-            "finish": "2026-01-15T21:18:00.323918+00:00"
+            "start": "2026-02-25T15:44:00.484448+00:00",
+            "finish": "2026-02-25T15:44:00.485862+00:00"
           },
           "domain": "automation",
           "item_id": "circadian_lighting",
@@ -21,23 +21,23 @@
             "trigger/0": [
               {
                 "path": "trigger/0",
-                "timestamp": "2026-01-15T21:18:00.323527+00:00",
+                "timestamp": "2026-02-25T15:44:00.484686+00:00",
                 "changed_variables": {
                   "this": {
                     "entity_id": "automation.living_room_circadian_lighting",
                     "state": "on",
                     "attributes": {
                       "id": "circadian_lighting",
-                      "last_triggered": "2026-01-07T17:40:00.244362+00:00",
+                      "last_triggered": "2026-02-23T21:26:00.101137+00:00",
                       "mode": "single",
                       "current": 0,
                       "friendly_name": "Living Room Circadian Lighting"
                     },
-                    "last_changed": "2026-01-15T19:06:08.578647+00:00",
-                    "last_reported": "2026-01-15T19:06:08.578647+00:00",
-                    "last_updated": "2026-01-15T19:06:08.578647+00:00",
+                    "last_changed": "2026-02-25T15:42:37.759289+00:00",
+                    "last_reported": "2026-02-25T15:42:37.759289+00:00",
+                    "last_updated": "2026-02-25T15:42:37.759289+00:00",
                     "context": {
-                      "id": "01KF1GT0T2BHY565TSSDVYB50X",
+                      "id": "01KJAQEV5Z2E7EJAZB1YP0CHAH",
                       "parent_id": null,
                       "user_id": null
                     }
@@ -47,7 +47,7 @@
                     "idx": "0",
                     "alias": null,
                     "platform": "time_pattern",
-                    "now": "2026-01-15T22:18:00.322841+01:00",
+                    "now": "2026-02-25T16:44:00.483744+01:00",
                     "description": "time pattern"
                   }
                 }
@@ -56,19 +56,79 @@
             "condition/0": [
               {
                 "path": "condition/0",
-                "timestamp": "2026-01-15T21:18:00.323642+00:00",
+                "timestamp": "2026-02-25T15:44:00.484883+00:00",
                 "result": {
-                  "result": false
+                  "result": true
                 }
               }
             ],
             "condition/0/entity_id/0": [
               {
                 "path": "condition/0/entity_id/0",
-                "timestamp": "2026-01-15T21:18:00.323731+00:00",
+                "timestamp": "2026-02-25T15:44:00.484994+00:00",
+                "result": {
+                  "result": true,
+                  "state": "on",
+                  "wanted_state": "on"
+                }
+              }
+            ],
+            "condition/1": [
+              {
+                "path": "condition/1",
+                "timestamp": "2026-02-25T15:44:00.485214+00:00",
+                "result": {
+                  "result": true
+                }
+              }
+            ],
+            "condition/1/entity_id/0": [
+              {
+                "path": "condition/1/entity_id/0",
+                "timestamp": "2026-02-25T15:44:00.485287+00:00",
+                "result": {
+                  "result": true,
+                  "state": "on",
+                  "wanted_state": "on"
+                }
+              }
+            ],
+            "condition/2": [
+              {
+                "path": "condition/2",
+                "timestamp": "2026-02-25T15:44:00.485465+00:00",
+                "result": {
+                  "result": true
+                }
+              }
+            ],
+            "condition/2/entity_id/0": [
+              {
+                "path": "condition/2/entity_id/0",
+                "timestamp": "2026-02-25T15:44:00.485535+00:00",
+                "result": {
+                  "result": true,
+                  "state": "off",
+                  "wanted_state": "off"
+                }
+              }
+            ],
+            "condition/3": [
+              {
+                "path": "condition/3",
+                "timestamp": "2026-02-25T15:44:00.485667+00:00",
+                "result": {
+                  "result": false
+                }
+              }
+            ],
+            "condition/3/entity_id/0": [
+              {
+                "path": "condition/3/entity_id/0",
+                "timestamp": "2026-02-25T15:44:00.485733+00:00",
                 "result": {
                   "result": false,
-                  "state": "unknown",
+                  "state": "off",
                   "wanted_state": "on"
                 }
               }
@@ -77,11 +137,11 @@
           "config": {
             "id": "circadian_lighting",
             "alias": "Living Room Circadian Lighting",
-            "description": "Continuously adapts light color and brightness based on sun position",
+            "description": "Continuously adapts light color and brightness based on sun position. Yields control to motion lighting while presence is actively detected, resuming 2 minutes after the room becomes empty so both automations stay in sync.",
             "trigger": [
               {
                 "platform": "time_pattern",
-                "minutes": "/02"
+                "minutes": "/2"
               }
             ],
             "condition": [
@@ -99,23 +159,22 @@
                 "condition": "state",
                 "entity_id": "input_boolean.living_room_manual_mode",
                 "state": "off"
+              },
+              {
+                "condition": "state",
+                "entity_id": "binary_sensor.sensor_presence",
+                "state": "on",
+                "for": "00:03:00"
               }
             ],
             "action": [
-              {
-                "variables": {
-                  "sun_elevation": "{{ state_attr('sun.sun', 'elevation') | float }}",
-                  "brightness": "{% set elev = sun_elevation | float %} {% if elev < -6 %}\n  20\n{% elif elev < 0 %}\n  40\n{% elif elev < 20 %}\n  70\n{% else %}\n  90\n{% endif %}\n",
-                  "color_temp": "{% set elev = sun_elevation | float %} {% if elev < -6 %}\n  420\n{% elif elev < 0 %}\n  370\n{% elif elev < 20 %}\n  300\n{% else %}\n  250\n{% endif %}\n"
-                }
-              },
               {
                 "target": {
                   "entity_id": "light.smart_bulb"
                 },
                 "data": {
-                  "brightness_pct": "{{ brightness }}",
-                  "color_temp_kelvin": "{{ color_temp }}",
+                  "brightness_pct": "{% set elev = state_attr('sun.sun', 'elevation') | float %} {% if elev < -6 %}\n  20\n{% elif elev < 0 %}\n  40\n{% elif elev < 20 %}\n  70\n{% else %}\n  90\n{% endif %}\n",
+                  "color_temp_kelvin": "{% set elev = state_attr('sun.sun', 'elevation') | float %} {% if elev < -6 %}\n  2200\n{% elif elev < 0 %}\n  2700\n{% elif elev < 20 %}\n  3500\n{% else %}\n  5000\n{% endif %}\n",
                   "transition": 15
                 },
                 "action": "light.turn_on"
@@ -123,7 +182,7 @@
               {
                 "data": {
                   "level": "info",
-                  "message": "Circadian update \u2192 brightness {{ brightness }}%, color_temp {{ color_temp }} (sun elevation {{ sun_elevation }} at {{ now().strftime('%H:%M:%S') }})\n"
+                  "message": "Circadian update - brightness {{ brightness }}%, color_temp {{ color_temp }}K (sun elevation {{ state_attr('sun.sun', 'elevation') | float }}deg) at {{ now().strftime('%H:%M:%S') }}\n"
                 },
                 "action": "system_log.write"
               }
@@ -132,19 +191,19 @@
           },
           "blueprint_inputs": null,
           "context": {
-            "id": "01KF1RBF4324R3EK73K88WFYQW",
+            "id": "01KJAQHBZ4SFKZDN19BZ154ZGF",
             "parent_id": null,
             "user_id": null
           }
         },
         "short_dict": {
-          "last_step": "condition/0/entity_id/0",
-          "run_id": "25cdee6c50dec36346ad08d79cf904ca",
+          "last_step": "condition/3/entity_id/0",
+          "run_id": "1b7376d9ae42c9626dc649c3632de5d3",
           "state": "stopped",
           "script_execution": "failed_conditions",
           "timestamp": {
-            "start": "2026-01-15T21:18:00.323365+00:00",
-            "finish": "2026-01-15T21:18:00.323918+00:00"
+            "start": "2026-02-25T15:44:00.484448+00:00",
+            "finish": "2026-02-25T15:44:00.485862+00:00"
           },
           "domain": "automation",
           "item_id": "circadian_lighting",
@@ -154,12 +213,12 @@
       {
         "extended_dict": {
           "last_step": "condition/0/entity_id/0",
-          "run_id": "454a3fb0389a6a85184c31bdeebd7271",
+          "run_id": "d4adb4c6999a1af5fea25ceeffe0f988",
           "state": "stopped",
           "script_execution": "failed_conditions",
           "timestamp": {
-            "start": "2026-01-15T21:20:00.323111+00:00",
-            "finish": "2026-01-15T21:20:00.323656+00:00"
+            "start": "2026-02-25T15:46:00.484581+00:00",
+            "finish": "2026-02-25T15:46:00.485135+00:00"
           },
           "domain": "automation",
           "item_id": "circadian_lighting",
@@ -168,23 +227,23 @@
             "trigger/0": [
               {
                 "path": "trigger/0",
-                "timestamp": "2026-01-15T21:20:00.323274+00:00",
+                "timestamp": "2026-02-25T15:46:00.484696+00:00",
                 "changed_variables": {
                   "this": {
                     "entity_id": "automation.living_room_circadian_lighting",
                     "state": "on",
                     "attributes": {
                       "id": "circadian_lighting",
-                      "last_triggered": "2026-01-07T17:40:00.244362+00:00",
+                      "last_triggered": "2026-02-23T21:26:00.101137+00:00",
                       "mode": "single",
                       "current": 0,
                       "friendly_name": "Living Room Circadian Lighting"
                     },
-                    "last_changed": "2026-01-15T19:06:08.578647+00:00",
-                    "last_reported": "2026-01-15T19:06:08.578647+00:00",
-                    "last_updated": "2026-01-15T19:06:08.578647+00:00",
+                    "last_changed": "2026-02-25T15:42:37.759289+00:00",
+                    "last_reported": "2026-02-25T15:42:37.759289+00:00",
+                    "last_updated": "2026-02-25T15:42:37.759289+00:00",
                     "context": {
-                      "id": "01KF1GT0T2BHY565TSSDVYB50X",
+                      "id": "01KJAQEV5Z2E7EJAZB1YP0CHAH",
                       "parent_id": null,
                       "user_id": null
                     }
@@ -194,7 +253,7 @@
                     "idx": "0",
                     "alias": null,
                     "platform": "time_pattern",
-                    "now": "2026-01-15T22:20:00.322578+01:00",
+                    "now": "2026-02-25T16:46:00.484006+01:00",
                     "description": "time pattern"
                   }
                 }
@@ -203,7 +262,7 @@
             "condition/0": [
               {
                 "path": "condition/0",
-                "timestamp": "2026-01-15T21:20:00.323383+00:00",
+                "timestamp": "2026-02-25T15:46:00.484798+00:00",
                 "result": {
                   "result": false
                 }
@@ -212,10 +271,10 @@
             "condition/0/entity_id/0": [
               {
                 "path": "condition/0/entity_id/0",
-                "timestamp": "2026-01-15T21:20:00.323472+00:00",
+                "timestamp": "2026-02-25T15:46:00.484944+00:00",
                 "result": {
                   "result": false,
-                  "state": "unknown",
+                  "state": "off",
                   "wanted_state": "on"
                 }
               }
@@ -224,11 +283,11 @@
           "config": {
             "id": "circadian_lighting",
             "alias": "Living Room Circadian Lighting",
-            "description": "Continuously adapts light color and brightness based on sun position",
+            "description": "Continuously adapts light color and brightness based on sun position. Yields control to motion lighting while presence is actively detected, resuming 2 minutes after the room becomes empty so both automations stay in sync.",
             "trigger": [
               {
                 "platform": "time_pattern",
-                "minutes": "/02"
+                "minutes": "/2"
               }
             ],
             "condition": [
@@ -246,23 +305,22 @@
                 "condition": "state",
                 "entity_id": "input_boolean.living_room_manual_mode",
                 "state": "off"
+              },
+              {
+                "condition": "state",
+                "entity_id": "binary_sensor.sensor_presence",
+                "state": "on",
+                "for": "00:03:00"
               }
             ],
             "action": [
-              {
-                "variables": {
-                  "sun_elevation": "{{ state_attr('sun.sun', 'elevation') | float }}",
-                  "brightness": "{% set elev = sun_elevation | float %} {% if elev < -6 %}\n  20\n{% elif elev < 0 %}\n  40\n{% elif elev < 20 %}\n  70\n{% else %}\n  90\n{% endif %}\n",
-                  "color_temp": "{% set elev = sun_elevation | float %} {% if elev < -6 %}\n  420\n{% elif elev < 0 %}\n  370\n{% elif elev < 20 %}\n  300\n{% else %}\n  250\n{% endif %}\n"
-                }
-              },
               {
                 "target": {
                   "entity_id": "light.smart_bulb"
                 },
                 "data": {
-                  "brightness_pct": "{{ brightness }}",
-                  "color_temp_kelvin": "{{ color_temp }}",
+                  "brightness_pct": "{% set elev = state_attr('sun.sun', 'elevation') | float %} {% if elev < -6 %}\n  20\n{% elif elev < 0 %}\n  40\n{% elif elev < 20 %}\n  70\n{% else %}\n  90\n{% endif %}\n",
+                  "color_temp_kelvin": "{% set elev = state_attr('sun.sun', 'elevation') | float %} {% if elev < -6 %}\n  2200\n{% elif elev < 0 %}\n  2700\n{% elif elev < 20 %}\n  3500\n{% else %}\n  5000\n{% endif %}\n",
                   "transition": 15
                 },
                 "action": "light.turn_on"
@@ -270,7 +328,7 @@
               {
                 "data": {
                   "level": "info",
-                  "message": "Circadian update \u2192 brightness {{ brightness }}%, color_temp {{ color_temp }} (sun elevation {{ sun_elevation }} at {{ now().strftime('%H:%M:%S') }})\n"
+                  "message": "Circadian update - brightness {{ brightness }}%, color_temp {{ color_temp }}K (sun elevation {{ state_attr('sun.sun', 'elevation') | float }}deg) at {{ now().strftime('%H:%M:%S') }}\n"
                 },
                 "action": "system_log.write"
               }
@@ -279,19 +337,19 @@
           },
           "blueprint_inputs": null,
           "context": {
-            "id": "01KF1RF4A30BSAAE7ZQB288SKQ",
+            "id": "01KJAQN154RZBZFDDW57YC2QCH",
             "parent_id": null,
             "user_id": null
           }
         },
         "short_dict": {
           "last_step": "condition/0/entity_id/0",
-          "run_id": "454a3fb0389a6a85184c31bdeebd7271",
+          "run_id": "d4adb4c6999a1af5fea25ceeffe0f988",
           "state": "stopped",
           "script_execution": "failed_conditions",
           "timestamp": {
-            "start": "2026-01-15T21:20:00.323111+00:00",
-            "finish": "2026-01-15T21:20:00.323656+00:00"
+            "start": "2026-02-25T15:46:00.484581+00:00",
+            "finish": "2026-02-25T15:46:00.485135+00:00"
           },
           "domain": "automation",
           "item_id": "circadian_lighting",
@@ -301,12 +359,12 @@
       {
         "extended_dict": {
           "last_step": "condition/0/entity_id/0",
-          "run_id": "ec42a34582ae5eff83b84eec440a5f95",
+          "run_id": "13f689dd09a6fbacef11d6dd775ef72c",
           "state": "stopped",
           "script_execution": "failed_conditions",
           "timestamp": {
-            "start": "2026-01-15T21:22:00.323333+00:00",
-            "finish": "2026-01-15T21:22:00.323879+00:00"
+            "start": "2026-02-25T15:48:00.484822+00:00",
+            "finish": "2026-02-25T15:48:00.485359+00:00"
           },
           "domain": "automation",
           "item_id": "circadian_lighting",
@@ -315,23 +373,23 @@
             "trigger/0": [
               {
                 "path": "trigger/0",
-                "timestamp": "2026-01-15T21:22:00.323503+00:00",
+                "timestamp": "2026-02-25T15:48:00.485015+00:00",
                 "changed_variables": {
                   "this": {
                     "entity_id": "automation.living_room_circadian_lighting",
                     "state": "on",
                     "attributes": {
                       "id": "circadian_lighting",
-                      "last_triggered": "2026-01-07T17:40:00.244362+00:00",
+                      "last_triggered": "2026-02-23T21:26:00.101137+00:00",
                       "mode": "single",
                       "current": 0,
                       "friendly_name": "Living Room Circadian Lighting"
                     },
-                    "last_changed": "2026-01-15T19:06:08.578647+00:00",
-                    "last_reported": "2026-01-15T19:06:08.578647+00:00",
-                    "last_updated": "2026-01-15T19:06:08.578647+00:00",
+                    "last_changed": "2026-02-25T15:42:37.759289+00:00",
+                    "last_reported": "2026-02-25T15:42:37.759289+00:00",
+                    "last_updated": "2026-02-25T15:42:37.759289+00:00",
                     "context": {
-                      "id": "01KF1GT0T2BHY565TSSDVYB50X",
+                      "id": "01KJAQEV5Z2E7EJAZB1YP0CHAH",
                       "parent_id": null,
                       "user_id": null
                     }
@@ -341,7 +399,7 @@
                     "idx": "0",
                     "alias": null,
                     "platform": "time_pattern",
-                    "now": "2026-01-15T22:22:00.322805+01:00",
+                    "now": "2026-02-25T16:48:00.484311+01:00",
                     "description": "time pattern"
                   }
                 }
@@ -350,7 +408,7 @@
             "condition/0": [
               {
                 "path": "condition/0",
-                "timestamp": "2026-01-15T21:22:00.323612+00:00",
+                "timestamp": "2026-02-25T15:48:00.485113+00:00",
                 "result": {
                   "result": false
                 }
@@ -359,10 +417,10 @@
             "condition/0/entity_id/0": [
               {
                 "path": "condition/0/entity_id/0",
-                "timestamp": "2026-01-15T21:22:00.323698+00:00",
+                "timestamp": "2026-02-25T15:48:00.485191+00:00",
                 "result": {
                   "result": false,
-                  "state": "unknown",
+                  "state": "off",
                   "wanted_state": "on"
                 }
               }
@@ -371,11 +429,11 @@
           "config": {
             "id": "circadian_lighting",
             "alias": "Living Room Circadian Lighting",
-            "description": "Continuously adapts light color and brightness based on sun position",
+            "description": "Continuously adapts light color and brightness based on sun position. Yields control to motion lighting while presence is actively detected, resuming 2 minutes after the room becomes empty so both automations stay in sync.",
             "trigger": [
               {
                 "platform": "time_pattern",
-                "minutes": "/02"
+                "minutes": "/2"
               }
             ],
             "condition": [
@@ -393,23 +451,22 @@
                 "condition": "state",
                 "entity_id": "input_boolean.living_room_manual_mode",
                 "state": "off"
+              },
+              {
+                "condition": "state",
+                "entity_id": "binary_sensor.sensor_presence",
+                "state": "on",
+                "for": "00:03:00"
               }
             ],
             "action": [
-              {
-                "variables": {
-                  "sun_elevation": "{{ state_attr('sun.sun', 'elevation') | float }}",
-                  "brightness": "{% set elev = sun_elevation | float %} {% if elev < -6 %}\n  20\n{% elif elev < 0 %}\n  40\n{% elif elev < 20 %}\n  70\n{% else %}\n  90\n{% endif %}\n",
-                  "color_temp": "{% set elev = sun_elevation | float %} {% if elev < -6 %}\n  420\n{% elif elev < 0 %}\n  370\n{% elif elev < 20 %}\n  300\n{% else %}\n  250\n{% endif %}\n"
-                }
-              },
               {
                 "target": {
                   "entity_id": "light.smart_bulb"
                 },
                 "data": {
-                  "brightness_pct": "{{ brightness }}",
-                  "color_temp_kelvin": "{{ color_temp }}",
+                  "brightness_pct": "{% set elev = state_attr('sun.sun', 'elevation') | float %} {% if elev < -6 %}\n  20\n{% elif elev < 0 %}\n  40\n{% elif elev < 20 %}\n  70\n{% else %}\n  90\n{% endif %}\n",
+                  "color_temp_kelvin": "{% set elev = state_attr('sun.sun', 'elevation') | float %} {% if elev < -6 %}\n  2200\n{% elif elev < 0 %}\n  2700\n{% elif elev < 20 %}\n  3500\n{% else %}\n  5000\n{% endif %}\n",
                   "transition": 15
                 },
                 "action": "light.turn_on"
@@ -417,7 +474,7 @@
               {
                 "data": {
                   "level": "info",
-                  "message": "Circadian update \u2192 brightness {{ brightness }}%, color_temp {{ color_temp }} (sun elevation {{ sun_elevation }} at {{ now().strftime('%H:%M:%S') }})\n"
+                  "message": "Circadian update - brightness {{ brightness }}%, color_temp {{ color_temp }}K (sun elevation {{ state_attr('sun.sun', 'elevation') | float }}deg) at {{ now().strftime('%H:%M:%S') }}\n"
                 },
                 "action": "system_log.write"
               }
@@ -426,70 +483,109 @@
           },
           "blueprint_inputs": null,
           "context": {
-            "id": "01KF1RJSG3JM9C05GM2H82G2H7",
+            "id": "01KJAQRPB40K1CR8FP66RH3B0E",
             "parent_id": null,
             "user_id": null
           }
         },
         "short_dict": {
           "last_step": "condition/0/entity_id/0",
-          "run_id": "ec42a34582ae5eff83b84eec440a5f95",
+          "run_id": "13f689dd09a6fbacef11d6dd775ef72c",
           "state": "stopped",
           "script_execution": "failed_conditions",
           "timestamp": {
-            "start": "2026-01-15T21:22:00.323333+00:00",
-            "finish": "2026-01-15T21:22:00.323879+00:00"
+            "start": "2026-02-25T15:48:00.484822+00:00",
+            "finish": "2026-02-25T15:48:00.485359+00:00"
           },
           "domain": "automation",
           "item_id": "circadian_lighting",
           "trigger": "time pattern"
         }
-      },
+      }
+    ],
+    "automation.living_room_motion_light": [
       {
         "extended_dict": {
-          "last_step": "condition/0/entity_id/0",
-          "run_id": "55fb7766b5141662c8ec6ccb5a6897aa",
+          "last_step": "action/0/choose/1/sequence/1",
+          "run_id": "cd91216b9ccc5f6f7aa19c8609f8ece9",
           "state": "stopped",
-          "script_execution": "failed_conditions",
+          "script_execution": "finished",
           "timestamp": {
-            "start": "2026-01-15T21:24:00.323001+00:00",
-            "finish": "2026-01-15T21:24:00.323572+00:00"
+            "start": "2026-02-25T15:44:53.023766+00:00",
+            "finish": "2026-02-25T15:44:53.067748+00:00"
           },
           "domain": "automation",
-          "item_id": "circadian_lighting",
-          "trigger": "time pattern",
+          "item_id": "living_room_motion_light",
+          "trigger": "state of binary_sensor.sensor_presence",
           "trace": {
-            "trigger/0": [
+            "trigger/1": [
               {
-                "path": "trigger/0",
-                "timestamp": "2026-01-15T21:24:00.323186+00:00",
+                "path": "trigger/1",
+                "timestamp": "2026-02-25T15:44:53.023945+00:00",
                 "changed_variables": {
                   "this": {
-                    "entity_id": "automation.living_room_circadian_lighting",
+                    "entity_id": "automation.living_room_motion_light",
                     "state": "on",
                     "attributes": {
-                      "id": "circadian_lighting",
-                      "last_triggered": "2026-01-07T17:40:00.244362+00:00",
-                      "mode": "single",
+                      "id": "living_room_motion_light",
+                      "last_triggered": "2026-02-25T15:18:37.653326+00:00",
+                      "mode": "restart",
                       "current": 0,
-                      "friendly_name": "Living Room Circadian Lighting"
+                      "friendly_name": "Living Room Motion Light"
                     },
-                    "last_changed": "2026-01-15T19:06:08.578647+00:00",
-                    "last_reported": "2026-01-15T19:06:08.578647+00:00",
-                    "last_updated": "2026-01-15T19:06:08.578647+00:00",
+                    "last_changed": "2026-02-25T15:42:37.758440+00:00",
+                    "last_reported": "2026-02-25T15:42:37.758440+00:00",
+                    "last_updated": "2026-02-25T15:42:37.758440+00:00",
                     "context": {
-                      "id": "01KF1GT0T2BHY565TSSDVYB50X",
+                      "id": "01KJAQEV5YAWZF7DA4FKJH4F1D",
                       "parent_id": null,
                       "user_id": null
                     }
                   },
                   "trigger": {
-                    "id": "0",
-                    "idx": "0",
+                    "id": "motion_off",
+                    "idx": "1",
                     "alias": null,
-                    "platform": "time_pattern",
-                    "now": "2026-01-15T22:24:00.322476+01:00",
-                    "description": "time pattern"
+                    "platform": "state",
+                    "entity_id": "binary_sensor.sensor_presence",
+                    "from_state": {
+                      "entity_id": "binary_sensor.sensor_presence",
+                      "state": "unknown",
+                      "attributes": {
+                        "device_class": "occupancy",
+                        "friendly_name": "Sensor Occupancy"
+                      },
+                      "last_changed": "2026-02-25T15:43:17.980950+00:00",
+                      "last_reported": "2026-02-25T15:43:17.980950+00:00",
+                      "last_updated": "2026-02-25T15:43:17.980950+00:00",
+                      "context": {
+                        "id": "01KJAQG2EWBTRNGRWRMJSMMH5B",
+                        "parent_id": null,
+                        "user_id": null
+                      }
+                    },
+                    "to_state": {
+                      "entity_id": "binary_sensor.sensor_presence",
+                      "state": "off",
+                      "attributes": {
+                        "device_class": "occupancy",
+                        "friendly_name": "Sensor Occupancy"
+                      },
+                      "last_changed": "2026-02-25T15:43:53.015018+00:00",
+                      "last_reported": "2026-02-25T15:43:53.015018+00:00",
+                      "last_updated": "2026-02-25T15:43:53.015018+00:00",
+                      "context": {
+                        "id": "01KJAQH4NQYEDW3ZJHYXHKCD55",
+                        "parent_id": null,
+                        "user_id": null
+                      }
+                    },
+                    "for": {
+                      "__type": "<class 'datetime.timedelta'>",
+                      "total_seconds": 60.0
+                    },
+                    "attribute": null,
+                    "description": "state of binary_sensor.sensor_presence"
                   }
                 }
               }
@@ -497,43 +593,205 @@
             "condition/0": [
               {
                 "path": "condition/0",
-                "timestamp": "2026-01-15T21:24:00.323296+00:00",
+                "timestamp": "2026-02-25T15:44:53.024054+00:00",
                 "result": {
-                  "result": false
+                  "result": true
                 }
               }
             ],
             "condition/0/entity_id/0": [
               {
                 "path": "condition/0/entity_id/0",
-                "timestamp": "2026-01-15T21:24:00.323388+00:00",
+                "timestamp": "2026-02-25T15:44:53.024132+00:00",
                 "result": {
-                  "result": false,
-                  "state": "unknown",
+                  "result": true,
+                  "state": "on",
                   "wanted_state": "on"
+                }
+              }
+            ],
+            "condition/1": [
+              {
+                "path": "condition/1",
+                "timestamp": "2026-02-25T15:44:53.024317+00:00",
+                "result": {
+                  "result": true
+                }
+              }
+            ],
+            "condition/1/entity_id/0": [
+              {
+                "path": "condition/1/entity_id/0",
+                "timestamp": "2026-02-25T15:44:53.024395+00:00",
+                "result": {
+                  "result": true,
+                  "state": 0.0
+                }
+              }
+            ],
+            "condition/2": [
+              {
+                "path": "condition/2",
+                "timestamp": "2026-02-25T15:44:53.024545+00:00",
+                "result": {
+                  "result": true
+                }
+              }
+            ],
+            "condition/2/entity_id/0": [
+              {
+                "path": "condition/2/entity_id/0",
+                "timestamp": "2026-02-25T15:44:53.024615+00:00",
+                "result": {
+                  "result": true,
+                  "state": "on",
+                  "wanted_state": "on"
+                }
+              }
+            ],
+            "condition/3": [
+              {
+                "path": "condition/3",
+                "timestamp": "2026-02-25T15:44:53.024750+00:00",
+                "result": {
+                  "result": true
+                }
+              }
+            ],
+            "condition/3/entity_id/0": [
+              {
+                "path": "condition/3/entity_id/0",
+                "timestamp": "2026-02-25T15:44:53.024817+00:00",
+                "result": {
+                  "result": true,
+                  "state": "off",
+                  "wanted_state": "off"
+                }
+              }
+            ],
+            "action/0": [
+              {
+                "path": "action/0",
+                "timestamp": "2026-02-25T15:44:53.026763+00:00",
+                "changed_variables": {
+                  "context": {
+                    "id": "01KJAQJZ8ZGCFWYB219HDB7PMB",
+                    "parent_id": "01KJAQH4NQYEDW3ZJHYXHKCD55",
+                    "user_id": null
+                  }
+                },
+                "result": {
+                  "choice": 1
+                }
+              }
+            ],
+            "action/0/choose/0": [
+              {
+                "path": "action/0/choose/0",
+                "timestamp": "2026-02-25T15:44:53.027663+00:00",
+                "result": {
+                  "result": false
+                }
+              }
+            ],
+            "action/0/choose/0/conditions/0": [
+              {
+                "path": "action/0/choose/0/conditions/0",
+                "timestamp": "2026-02-25T15:44:53.027915+00:00",
+                "result": {
+                  "result": false
+                }
+              }
+            ],
+            "action/0/choose/1": [
+              {
+                "path": "action/0/choose/1",
+                "timestamp": "2026-02-25T15:44:53.028244+00:00",
+                "result": {
+                  "result": true
+                }
+              }
+            ],
+            "action/0/choose/1/conditions/0": [
+              {
+                "path": "action/0/choose/1/conditions/0",
+                "timestamp": "2026-02-25T15:44:53.028436+00:00",
+                "result": {
+                  "result": true
+                }
+              }
+            ],
+            "action/0/choose/1/sequence/0": [
+              {
+                "path": "action/0/choose/1/sequence/0",
+                "timestamp": "2026-02-25T15:44:53.029599+00:00",
+                "result": {
+                  "params": {
+                    "domain": "light",
+                    "service": "turn_off",
+                    "service_data": {},
+                    "target": {
+                      "entity_id": [
+                        "light.smart_bulb"
+                      ]
+                    }
+                  },
+                  "running_script": false
+                }
+              }
+            ],
+            "action/0/choose/1/sequence/1": [
+              {
+                "path": "action/0/choose/1/sequence/1",
+                "timestamp": "2026-02-25T15:44:53.046945+00:00",
+                "result": {
+                  "params": {
+                    "domain": "system_log",
+                    "service": "write",
+                    "service_data": {
+                      "level": "info",
+                      "message": "Motion lighting turned off - Light turned OFF at 16:44:53"
+                    },
+                    "target": {}
+                  },
+                  "running_script": false
                 }
               }
             ]
           },
           "config": {
-            "id": "circadian_lighting",
-            "alias": "Living Room Circadian Lighting",
-            "description": "Continuously adapts light color and brightness based on sun position",
+            "id": "living_room_motion_light",
+            "alias": "Living Room Motion Light",
+            "description": "Adaptive motion lighting with power-awareness",
             "trigger": [
               {
-                "platform": "time_pattern",
-                "minutes": "/02"
+                "platform": "state",
+                "entity_id": "binary_sensor.sensor_presence",
+                "to": "on",
+                "id": "motion_on"
+              },
+              {
+                "platform": "state",
+                "entity_id": "binary_sensor.sensor_presence",
+                "to": "off",
+                "for": "00:01:00",
+                "id": "motion_off"
               }
             ],
             "condition": [
               {
                 "condition": "state",
-                "entity_id": "light.smart_bulb",
+                "entity_id": "input_boolean.living_room_power_allowed",
                 "state": "on"
               },
               {
+                "condition": "numeric_state",
+                "entity_id": "sensor.sensor_illuminance",
+                "below": 150
+              },
+              {
                 "condition": "state",
-                "entity_id": "input_boolean.living_room_power_allowed",
+                "entity_id": "input_boolean.living_room_motion_enable",
                 "state": "on"
               },
               {
@@ -544,99 +802,626 @@
             ],
             "action": [
               {
-                "variables": {
-                  "sun_elevation": "{{ state_attr('sun.sun', 'elevation') | float }}",
-                  "brightness": "{% set elev = sun_elevation | float %} {% if elev < -6 %}\n  20\n{% elif elev < 0 %}\n  40\n{% elif elev < 20 %}\n  70\n{% else %}\n  90\n{% endif %}\n",
-                  "color_temp": "{% set elev = sun_elevation | float %} {% if elev < -6 %}\n  420\n{% elif elev < 0 %}\n  370\n{% elif elev < 20 %}\n  300\n{% else %}\n  250\n{% endif %}\n"
-                }
-              },
-              {
-                "target": {
-                  "entity_id": "light.smart_bulb"
-                },
-                "data": {
-                  "brightness_pct": "{{ brightness }}",
-                  "color_temp_kelvin": "{{ color_temp }}",
-                  "transition": 15
-                },
-                "action": "light.turn_on"
-              },
-              {
-                "data": {
-                  "level": "info",
-                  "message": "Circadian update \u2192 brightness {{ brightness }}%, color_temp {{ color_temp }} (sun elevation {{ sun_elevation }} at {{ now().strftime('%H:%M:%S') }})\n"
-                },
-                "action": "system_log.write"
+                "choose": [
+                  {
+                    "conditions": [
+                      {
+                        "condition": "trigger",
+                        "id": "motion_on"
+                      }
+                    ],
+                    "sequence": [
+                      {
+                        "choose": [
+                          {
+                            "conditions": [
+                              {
+                                "condition": "time",
+                                "after": "23:00:00",
+                                "before": "06:00:00"
+                              }
+                            ],
+                            "sequence": [
+                              {
+                                "target": {
+                                  "entity_id": "light.smart_bulb"
+                                },
+                                "data": {
+                                  "brightness_pct": 20,
+                                  "color_temp_kelvin": 2200,
+                                  "transition": 2
+                                },
+                                "action": "light.turn_on"
+                              }
+                            ]
+                          },
+                          {
+                            "conditions": [
+                              {
+                                "condition": "time",
+                                "after": "18:00:00",
+                                "before": "23:00:00"
+                              }
+                            ],
+                            "sequence": [
+                              {
+                                "target": {
+                                  "entity_id": "light.smart_bulb"
+                                },
+                                "data": {
+                                  "brightness_pct": 60,
+                                  "color_temp_kelvin": 3000,
+                                  "transition": 3
+                                },
+                                "action": "light.turn_on"
+                              }
+                            ]
+                          },
+                          {
+                            "conditions": [
+                              {
+                                "condition": "time",
+                                "after": "06:00:00",
+                                "before": "18:00:00"
+                              }
+                            ],
+                            "sequence": [
+                              {
+                                "target": {
+                                  "entity_id": "light.smart_bulb"
+                                },
+                                "data": {
+                                  "brightness_pct": 90,
+                                  "color_temp_kelvin": 5000,
+                                  "transition": 3
+                                },
+                                "action": "light.turn_on"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "data": {
+                          "level": "info",
+                          "message": "Motion lighting activated - Light turned ON at {{ now().strftime('%H:%M:%S') }}"
+                        },
+                        "action": "system_log.write"
+                      }
+                    ]
+                  },
+                  {
+                    "conditions": [
+                      {
+                        "condition": "trigger",
+                        "id": "motion_off"
+                      }
+                    ],
+                    "sequence": [
+                      {
+                        "target": {
+                          "entity_id": "light.smart_bulb"
+                        },
+                        "action": "light.turn_off"
+                      },
+                      {
+                        "data": {
+                          "level": "info",
+                          "message": "Motion lighting turned off - Light turned OFF at {{ now().strftime('%H:%M:%S') }}"
+                        },
+                        "action": "system_log.write"
+                      }
+                    ]
+                  }
+                ]
               }
             ],
-            "mode": "single"
+            "mode": "restart"
           },
           "blueprint_inputs": null,
           "context": {
-            "id": "01KF1RPEP28Q0Q08CHE4HHH29T",
-            "parent_id": null,
+            "id": "01KJAQJZ8ZGCFWYB219HDB7PMB",
+            "parent_id": "01KJAQH4NQYEDW3ZJHYXHKCD55",
             "user_id": null
           }
         },
         "short_dict": {
-          "last_step": "condition/0/entity_id/0",
-          "run_id": "55fb7766b5141662c8ec6ccb5a6897aa",
+          "last_step": "action/0/choose/1/sequence/1",
+          "run_id": "cd91216b9ccc5f6f7aa19c8609f8ece9",
           "state": "stopped",
-          "script_execution": "failed_conditions",
+          "script_execution": "finished",
           "timestamp": {
-            "start": "2026-01-15T21:24:00.323001+00:00",
-            "finish": "2026-01-15T21:24:00.323572+00:00"
+            "start": "2026-02-25T15:44:53.023766+00:00",
+            "finish": "2026-02-25T15:44:53.067748+00:00"
           },
           "domain": "automation",
-          "item_id": "circadian_lighting",
-          "trigger": "time pattern"
+          "item_id": "living_room_motion_light",
+          "trigger": "state of binary_sensor.sensor_presence"
+        }
+      }
+    ],
+    "automation.None": [
+      {
+        "extended_dict": {
+          "last_step": "action/0/choose/0/sequence/2",
+          "run_id": "777d4e54464ea3ad9b4cfc02c29254c2",
+          "state": "running",
+          "script_execution": null,
+          "timestamp": {
+            "start": "2026-02-25T15:45:53.023248+00:00",
+            "finish": null
+          },
+          "domain": "automation",
+          "item_id": "None",
+          "trigger": "state of binary_sensor.sensor_presence",
+          "trace": {
+            "trigger/1": [
+              {
+                "path": "trigger/1",
+                "timestamp": "2026-02-25T15:45:53.023385+00:00",
+                "changed_variables": {
+                  "this": {
+                    "entity_id": "automation.living_room_power_policy",
+                    "state": "on",
+                    "attributes": {
+                      "last_triggered": "2026-02-25T15:24:20.255591+00:00",
+                      "mode": "queued",
+                      "current": 0,
+                      "max": 10,
+                      "friendly_name": "Living Room Power Policy"
+                    },
+                    "last_changed": "2026-02-25T15:42:37.757190+00:00",
+                    "last_reported": "2026-02-25T15:42:37.757190+00:00",
+                    "last_updated": "2026-02-25T15:42:37.757190+00:00",
+                    "context": {
+                      "id": "01KJAQEV5XKG950PQNPTBGT5YP",
+                      "parent_id": null,
+                      "user_id": null
+                    }
+                  },
+                  "trigger": {
+                    "id": "no_motion",
+                    "idx": "1",
+                    "alias": null,
+                    "platform": "state",
+                    "entity_id": "binary_sensor.sensor_presence",
+                    "from_state": {
+                      "entity_id": "binary_sensor.sensor_presence",
+                      "state": "unknown",
+                      "attributes": {
+                        "device_class": "occupancy",
+                        "friendly_name": "Sensor Occupancy"
+                      },
+                      "last_changed": "2026-02-25T15:43:17.980950+00:00",
+                      "last_reported": "2026-02-25T15:43:17.980950+00:00",
+                      "last_updated": "2026-02-25T15:43:17.980950+00:00",
+                      "context": {
+                        "id": "01KJAQG2EWBTRNGRWRMJSMMH5B",
+                        "parent_id": null,
+                        "user_id": null
+                      }
+                    },
+                    "to_state": {
+                      "entity_id": "binary_sensor.sensor_presence",
+                      "state": "off",
+                      "attributes": {
+                        "device_class": "occupancy",
+                        "friendly_name": "Sensor Occupancy"
+                      },
+                      "last_changed": "2026-02-25T15:43:53.015018+00:00",
+                      "last_reported": "2026-02-25T15:43:53.015018+00:00",
+                      "last_updated": "2026-02-25T15:43:53.015018+00:00",
+                      "context": {
+                        "id": "01KJAQH4NQYEDW3ZJHYXHKCD55",
+                        "parent_id": null,
+                        "user_id": null
+                      }
+                    },
+                    "for": {
+                      "__type": "<class 'datetime.timedelta'>",
+                      "total_seconds": 120.0
+                    },
+                    "attribute": null,
+                    "description": "state of binary_sensor.sensor_presence"
+                  }
+                }
+              }
+            ],
+            "condition/0": [
+              {
+                "path": "condition/0",
+                "timestamp": "2026-02-25T15:45:53.023486+00:00",
+                "result": {
+                  "result": true
+                }
+              }
+            ],
+            "condition/0/entity_id/0": [
+              {
+                "path": "condition/0/entity_id/0",
+                "timestamp": "2026-02-25T15:45:53.023578+00:00",
+                "result": {
+                  "result": true,
+                  "state": "on",
+                  "wanted_state": "on"
+                }
+              }
+            ],
+            "action/0": [
+              {
+                "path": "action/0",
+                "timestamp": "2026-02-25T15:45:53.025684+00:00",
+                "changed_variables": {
+                  "context": {
+                    "id": "01KJAQMSVZ8F0QHDA5RVDERN6M",
+                    "parent_id": "01KJAQH4NQYEDW3ZJHYXHKCD55",
+                    "user_id": null
+                  }
+                },
+                "result": {
+                  "choice": 0
+                }
+              }
+            ],
+            "action/0/choose/0": [
+              {
+                "path": "action/0/choose/0",
+                "timestamp": "2026-02-25T15:45:53.027512+00:00",
+                "result": {
+                  "result": true
+                }
+              }
+            ],
+            "action/0/choose/0/conditions/0": [
+              {
+                "path": "action/0/choose/0/conditions/0",
+                "timestamp": "2026-02-25T15:45:53.027827+00:00",
+                "result": {
+                  "result": true
+                }
+              }
+            ],
+            "action/0/choose/0/conditions/0/conditions/0": [
+              {
+                "path": "action/0/choose/0/conditions/0/conditions/0",
+                "timestamp": "2026-02-25T15:45:53.028238+00:00",
+                "result": {
+                  "result": false
+                }
+              }
+            ],
+            "action/0/choose/0/conditions/0/conditions/1": [
+              {
+                "path": "action/0/choose/0/conditions/0/conditions/1",
+                "timestamp": "2026-02-25T15:45:53.028535+00:00",
+                "result": {
+                  "result": true
+                }
+              }
+            ],
+            "action/0/choose/0/sequence/0": [
+              {
+                "path": "action/0/choose/0/sequence/0",
+                "timestamp": "2026-02-25T15:45:53.033311+00:00",
+                "result": {
+                  "params": {
+                    "domain": "input_boolean",
+                    "service": "turn_off",
+                    "service_data": {},
+                    "target": {
+                      "entity_id": [
+                        "input_boolean.living_room_power_allowed"
+                      ]
+                    }
+                  },
+                  "running_script": false
+                }
+              }
+            ],
+            "action/0/choose/0/sequence/1": [
+              {
+                "path": "action/0/choose/0/sequence/1",
+                "timestamp": "2026-02-25T15:45:53.036671+00:00",
+                "result": {
+                  "params": {
+                    "domain": "switch",
+                    "service": "turn_off",
+                    "service_data": {},
+                    "target": {
+                      "entity_id": [
+                        "switch.smart_plug"
+                      ]
+                    }
+                  },
+                  "running_script": false
+                }
+              }
+            ],
+            "action/0/choose/0/sequence/2": [
+              {
+                "path": "action/0/choose/0/sequence/2",
+                "timestamp": "2026-02-25T15:45:53.069595+00:00",
+                "result": {
+                  "params": {
+                    "domain": "system_log",
+                    "service": "write",
+                    "service_data": {
+                      "level": "info",
+                      "message": "Living room power DISABLED due to no_motion"
+                    },
+                    "target": {}
+                  },
+                  "running_script": false
+                }
+              }
+            ]
+          },
+          "config": {
+            "alias": "Living Room Power Policy",
+            "description": "Controls power availability based on motion, load, and schedule",
+            "trigger": [
+              {
+                "platform": "numeric_state",
+                "entity_id": "sensor.smart_plug_power",
+                "below": 5,
+                "for": "00:02:00",
+                "id": "low_power"
+              },
+              {
+                "platform": "state",
+                "entity_id": "binary_sensor.sensor_presence",
+                "to": "off",
+                "for": "00:02:00",
+                "id": "no_motion"
+              },
+              {
+                "platform": "state",
+                "entity_id": "binary_sensor.sensor_presence",
+                "to": "on",
+                "id": "motion_returned"
+              },
+              {
+                "platform": "sun",
+                "event": "sunset",
+                "id": "on_time"
+              },
+              {
+                "platform": "time",
+                "at": "23:00:00",
+                "id": "off_time"
+              }
+            ],
+            "condition": [
+              {
+                "condition": "state",
+                "entity_id": "input_boolean.smart_plug_enable",
+                "state": "on"
+              }
+            ],
+            "action": [
+              {
+                "choose": [
+                  {
+                    "conditions": [
+                      {
+                        "condition": "or",
+                        "conditions": [
+                          {
+                            "condition": "trigger",
+                            "id": "low_power"
+                          },
+                          {
+                            "condition": "trigger",
+                            "id": "no_motion"
+                          },
+                          {
+                            "condition": "trigger",
+                            "id": "off_time"
+                          }
+                        ]
+                      }
+                    ],
+                    "sequence": [
+                      {
+                        "target": {
+                          "entity_id": "input_boolean.living_room_power_allowed"
+                        },
+                        "action": "input_boolean.turn_off"
+                      },
+                      {
+                        "target": {
+                          "entity_id": "switch.smart_plug"
+                        },
+                        "action": "switch.turn_off"
+                      },
+                      {
+                        "data": {
+                          "level": "info",
+                          "message": "Living room power DISABLED due to {{ trigger.id }}"
+                        },
+                        "action": "system_log.write"
+                      }
+                    ]
+                  },
+                  {
+                    "conditions": [
+                      {
+                        "condition": "trigger",
+                        "id": "on_time"
+                      }
+                    ],
+                    "sequence": [
+                      {
+                        "target": {
+                          "entity_id": "input_boolean.living_room_power_allowed"
+                        },
+                        "action": "input_boolean.turn_on"
+                      },
+                      {
+                        "target": {
+                          "entity_id": "switch.smart_plug"
+                        },
+                        "action": "switch.turn_on"
+                      },
+                      {
+                        "data": {
+                          "level": "info",
+                          "message": "Living room power ENABLED at sunset"
+                        },
+                        "action": "system_log.write"
+                      }
+                    ]
+                  },
+                  {
+                    "conditions": [
+                      {
+                        "condition": "trigger",
+                        "id": "motion_returned"
+                      },
+                      {
+                        "condition": "template",
+                        "value_template": "{{ state_attr('sun.sun', 'elevation') | float < 0 }}"
+                      },
+                      {
+                        "condition": "time",
+                        "before": "23:00:00"
+                      }
+                    ],
+                    "sequence": [
+                      {
+                        "target": {
+                          "entity_id": "input_boolean.living_room_power_allowed"
+                        },
+                        "action": "input_boolean.turn_on"
+                      },
+                      {
+                        "target": {
+                          "entity_id": "switch.smart_plug"
+                        },
+                        "action": "switch.turn_on"
+                      },
+                      {
+                        "data": {
+                          "level": "info",
+                          "message": "Living room power RE-ENABLED due to presence returning"
+                        },
+                        "action": "system_log.write"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "mode": "queued"
+          },
+          "blueprint_inputs": null,
+          "context": {
+            "id": "01KJAQMSVZ8F0QHDA5RVDERN6M",
+            "parent_id": "01KJAQH4NQYEDW3ZJHYXHKCD55",
+            "user_id": null
+          }
+        },
+        "short_dict": {
+          "last_step": "action/0/choose/0/sequence/2",
+          "run_id": "777d4e54464ea3ad9b4cfc02c29254c2",
+          "state": "running",
+          "script_execution": null,
+          "timestamp": {
+            "start": "2026-02-25T15:45:53.023248+00:00",
+            "finish": null
+          },
+          "domain": "automation",
+          "item_id": "None",
+          "trigger": "state of binary_sensor.sensor_presence"
         }
       },
       {
         "extended_dict": {
-          "last_step": "condition/0/entity_id/0",
-          "run_id": "d33f971ec100103199dd594f7fea6a39",
-          "state": "stopped",
-          "script_execution": "failed_conditions",
+          "last_step": "action/0/choose/0/sequence/2",
+          "run_id": "5286168f476487505bfad58649bb0bb4",
+          "state": "running",
+          "script_execution": null,
           "timestamp": {
-            "start": "2026-01-15T21:26:00.323038+00:00",
-            "finish": "2026-01-15T21:26:00.323592+00:00"
+            "start": "2026-02-25T15:47:57.470871+00:00",
+            "finish": null
           },
           "domain": "automation",
-          "item_id": "circadian_lighting",
-          "trigger": "time pattern",
+          "item_id": "None",
+          "trigger": "numeric state of sensor.smart_plug_power",
           "trace": {
             "trigger/0": [
               {
                 "path": "trigger/0",
-                "timestamp": "2026-01-15T21:26:00.323217+00:00",
+                "timestamp": "2026-02-25T15:47:57.471000+00:00",
                 "changed_variables": {
                   "this": {
-                    "entity_id": "automation.living_room_circadian_lighting",
+                    "entity_id": "automation.living_room_power_policy",
                     "state": "on",
                     "attributes": {
-                      "id": "circadian_lighting",
-                      "last_triggered": "2026-01-07T17:40:00.244362+00:00",
-                      "mode": "single",
+                      "last_triggered": "2026-02-25T15:45:53.024043+00:00",
+                      "mode": "queued",
                       "current": 0,
-                      "friendly_name": "Living Room Circadian Lighting"
+                      "max": 10,
+                      "friendly_name": "Living Room Power Policy"
                     },
-                    "last_changed": "2026-01-15T19:06:08.578647+00:00",
-                    "last_reported": "2026-01-15T19:06:08.578647+00:00",
-                    "last_updated": "2026-01-15T19:06:08.578647+00:00",
+                    "last_changed": "2026-02-25T15:42:37.757190+00:00",
+                    "last_reported": "2026-02-25T15:45:53.074370+00:00",
+                    "last_updated": "2026-02-25T15:45:53.074370+00:00",
                     "context": {
-                      "id": "01KF1GT0T2BHY565TSSDVYB50X",
-                      "parent_id": null,
+                      "id": "01KJAQMSVZ8F0QHDA5RVDERN6M",
+                      "parent_id": "01KJAQH4NQYEDW3ZJHYXHKCD55",
                       "user_id": null
                     }
                   },
                   "trigger": {
-                    "id": "0",
+                    "id": "low_power",
                     "idx": "0",
                     "alias": null,
-                    "platform": "time_pattern",
-                    "now": "2026-01-15T22:26:00.322499+01:00",
-                    "description": "time pattern"
+                    "platform": "numeric_state",
+                    "entity_id": "sensor.smart_plug_power",
+                    "below": 5.0,
+                    "above": null,
+                    "from_state": {
+                      "entity_id": "sensor.smart_plug_power",
+                      "state": "18",
+                      "attributes": {
+                        "state_class": "measurement",
+                        "unit_of_measurement": "W",
+                        "device_class": "power",
+                        "friendly_name": "Smart_Plug Power"
+                      },
+                      "last_changed": "2026-02-25T15:44:57.278623+00:00",
+                      "last_reported": "2026-02-25T15:44:57.278623+00:00",
+                      "last_updated": "2026-02-25T15:44:57.278623+00:00",
+                      "context": {
+                        "id": "01KJAQK3DYQSDRVNJKVJE7GMY6",
+                        "parent_id": null,
+                        "user_id": null
+                      }
+                    },
+                    "to_state": {
+                      "entity_id": "sensor.smart_plug_power",
+                      "state": "0",
+                      "attributes": {
+                        "state_class": "measurement",
+                        "unit_of_measurement": "W",
+                        "device_class": "power",
+                        "friendly_name": "Smart_Plug Power"
+                      },
+                      "last_changed": "2026-02-25T15:45:57.420722+00:00",
+                      "last_reported": "2026-02-25T15:45:57.420722+00:00",
+                      "last_updated": "2026-02-25T15:45:57.420722+00:00",
+                      "context": {
+                        "id": "01KJAQMY5C632GNGFZ5DHV11X3",
+                        "parent_id": null,
+                        "user_id": null
+                      }
+                    },
+                    "for": {
+                      "__type": "<class 'datetime.timedelta'>",
+                      "total_seconds": 120.0
+                    },
+                    "description": "numeric state of sensor.smart_plug_power"
                   }
                 }
               }
@@ -644,99 +1429,300 @@
             "condition/0": [
               {
                 "path": "condition/0",
-                "timestamp": "2026-01-15T21:26:00.323328+00:00",
+                "timestamp": "2026-02-25T15:47:57.471100+00:00",
                 "result": {
-                  "result": false
+                  "result": true
                 }
               }
             ],
             "condition/0/entity_id/0": [
               {
                 "path": "condition/0/entity_id/0",
-                "timestamp": "2026-01-15T21:26:00.323416+00:00",
+                "timestamp": "2026-02-25T15:47:57.471192+00:00",
                 "result": {
-                  "result": false,
-                  "state": "unknown",
+                  "result": true,
+                  "state": "on",
                   "wanted_state": "on"
+                }
+              }
+            ],
+            "action/0": [
+              {
+                "path": "action/0",
+                "timestamp": "2026-02-25T15:47:57.472740+00:00",
+                "changed_variables": {
+                  "context": {
+                    "id": "01KJAQRKCYR7TNRA44XTDS57W0",
+                    "parent_id": "01KJAQMY5C632GNGFZ5DHV11X3",
+                    "user_id": null
+                  }
+                },
+                "result": {
+                  "choice": 0
+                }
+              }
+            ],
+            "action/0/choose/0": [
+              {
+                "path": "action/0/choose/0",
+                "timestamp": "2026-02-25T15:47:57.473128+00:00",
+                "result": {
+                  "result": true
+                }
+              }
+            ],
+            "action/0/choose/0/conditions/0": [
+              {
+                "path": "action/0/choose/0/conditions/0",
+                "timestamp": "2026-02-25T15:47:57.473346+00:00",
+                "result": {
+                  "result": true
+                }
+              }
+            ],
+            "action/0/choose/0/conditions/0/conditions/0": [
+              {
+                "path": "action/0/choose/0/conditions/0/conditions/0",
+                "timestamp": "2026-02-25T15:47:57.473518+00:00",
+                "result": {
+                  "result": true
+                }
+              }
+            ],
+            "action/0/choose/0/sequence/0": [
+              {
+                "path": "action/0/choose/0/sequence/0",
+                "timestamp": "2026-02-25T15:47:57.474395+00:00",
+                "result": {
+                  "params": {
+                    "domain": "input_boolean",
+                    "service": "turn_off",
+                    "service_data": {},
+                    "target": {
+                      "entity_id": [
+                        "input_boolean.living_room_power_allowed"
+                      ]
+                    }
+                  },
+                  "running_script": false
+                }
+              }
+            ],
+            "action/0/choose/0/sequence/1": [
+              {
+                "path": "action/0/choose/0/sequence/1",
+                "timestamp": "2026-02-25T15:47:57.476155+00:00",
+                "result": {
+                  "params": {
+                    "domain": "switch",
+                    "service": "turn_off",
+                    "service_data": {},
+                    "target": {
+                      "entity_id": [
+                        "switch.smart_plug"
+                      ]
+                    }
+                  },
+                  "running_script": false
+                }
+              }
+            ],
+            "action/0/choose/0/sequence/2": [
+              {
+                "path": "action/0/choose/0/sequence/2",
+                "timestamp": "2026-02-25T15:47:57.494965+00:00",
+                "result": {
+                  "params": {
+                    "domain": "system_log",
+                    "service": "write",
+                    "service_data": {
+                      "level": "info",
+                      "message": "Living room power DISABLED due to low_power"
+                    },
+                    "target": {}
+                  },
+                  "running_script": false
                 }
               }
             ]
           },
           "config": {
-            "id": "circadian_lighting",
-            "alias": "Living Room Circadian Lighting",
-            "description": "Continuously adapts light color and brightness based on sun position",
+            "alias": "Living Room Power Policy",
+            "description": "Controls power availability based on motion, load, and schedule",
             "trigger": [
               {
-                "platform": "time_pattern",
-                "minutes": "/02"
+                "platform": "numeric_state",
+                "entity_id": "sensor.smart_plug_power",
+                "below": 5,
+                "for": "00:02:00",
+                "id": "low_power"
+              },
+              {
+                "platform": "state",
+                "entity_id": "binary_sensor.sensor_presence",
+                "to": "off",
+                "for": "00:02:00",
+                "id": "no_motion"
+              },
+              {
+                "platform": "state",
+                "entity_id": "binary_sensor.sensor_presence",
+                "to": "on",
+                "id": "motion_returned"
+              },
+              {
+                "platform": "sun",
+                "event": "sunset",
+                "id": "on_time"
+              },
+              {
+                "platform": "time",
+                "at": "23:00:00",
+                "id": "off_time"
               }
             ],
             "condition": [
               {
                 "condition": "state",
-                "entity_id": "light.smart_bulb",
+                "entity_id": "input_boolean.smart_plug_enable",
                 "state": "on"
-              },
-              {
-                "condition": "state",
-                "entity_id": "input_boolean.living_room_power_allowed",
-                "state": "on"
-              },
-              {
-                "condition": "state",
-                "entity_id": "input_boolean.living_room_manual_mode",
-                "state": "off"
               }
             ],
             "action": [
               {
-                "variables": {
-                  "sun_elevation": "{{ state_attr('sun.sun', 'elevation') | float }}",
-                  "brightness": "{% set elev = sun_elevation | float %} {% if elev < -6 %}\n  20\n{% elif elev < 0 %}\n  40\n{% elif elev < 20 %}\n  70\n{% else %}\n  90\n{% endif %}\n",
-                  "color_temp": "{% set elev = sun_elevation | float %} {% if elev < -6 %}\n  420\n{% elif elev < 0 %}\n  370\n{% elif elev < 20 %}\n  300\n{% else %}\n  250\n{% endif %}\n"
-                }
-              },
-              {
-                "target": {
-                  "entity_id": "light.smart_bulb"
-                },
-                "data": {
-                  "brightness_pct": "{{ brightness }}",
-                  "color_temp_kelvin": "{{ color_temp }}",
-                  "transition": 15
-                },
-                "action": "light.turn_on"
-              },
-              {
-                "data": {
-                  "level": "info",
-                  "message": "Circadian update \u2192 brightness {{ brightness }}%, color_temp {{ color_temp }} (sun elevation {{ sun_elevation }} at {{ now().strftime('%H:%M:%S') }})\n"
-                },
-                "action": "system_log.write"
+                "choose": [
+                  {
+                    "conditions": [
+                      {
+                        "condition": "or",
+                        "conditions": [
+                          {
+                            "condition": "trigger",
+                            "id": "low_power"
+                          },
+                          {
+                            "condition": "trigger",
+                            "id": "no_motion"
+                          },
+                          {
+                            "condition": "trigger",
+                            "id": "off_time"
+                          }
+                        ]
+                      }
+                    ],
+                    "sequence": [
+                      {
+                        "target": {
+                          "entity_id": "input_boolean.living_room_power_allowed"
+                        },
+                        "action": "input_boolean.turn_off"
+                      },
+                      {
+                        "target": {
+                          "entity_id": "switch.smart_plug"
+                        },
+                        "action": "switch.turn_off"
+                      },
+                      {
+                        "data": {
+                          "level": "info",
+                          "message": "Living room power DISABLED due to {{ trigger.id }}"
+                        },
+                        "action": "system_log.write"
+                      }
+                    ]
+                  },
+                  {
+                    "conditions": [
+                      {
+                        "condition": "trigger",
+                        "id": "on_time"
+                      }
+                    ],
+                    "sequence": [
+                      {
+                        "target": {
+                          "entity_id": "input_boolean.living_room_power_allowed"
+                        },
+                        "action": "input_boolean.turn_on"
+                      },
+                      {
+                        "target": {
+                          "entity_id": "switch.smart_plug"
+                        },
+                        "action": "switch.turn_on"
+                      },
+                      {
+                        "data": {
+                          "level": "info",
+                          "message": "Living room power ENABLED at sunset"
+                        },
+                        "action": "system_log.write"
+                      }
+                    ]
+                  },
+                  {
+                    "conditions": [
+                      {
+                        "condition": "trigger",
+                        "id": "motion_returned"
+                      },
+                      {
+                        "condition": "template",
+                        "value_template": "{{ state_attr('sun.sun', 'elevation') | float < 0 }}"
+                      },
+                      {
+                        "condition": "time",
+                        "before": "23:00:00"
+                      }
+                    ],
+                    "sequence": [
+                      {
+                        "target": {
+                          "entity_id": "input_boolean.living_room_power_allowed"
+                        },
+                        "action": "input_boolean.turn_on"
+                      },
+                      {
+                        "target": {
+                          "entity_id": "switch.smart_plug"
+                        },
+                        "action": "switch.turn_on"
+                      },
+                      {
+                        "data": {
+                          "level": "info",
+                          "message": "Living room power RE-ENABLED due to presence returning"
+                        },
+                        "action": "system_log.write"
+                      }
+                    ]
+                  }
+                ]
               }
             ],
-            "mode": "single"
+            "mode": "queued"
           },
           "blueprint_inputs": null,
           "context": {
-            "id": "01KF1RT3W2RKY5XKZVETZV92VE",
-            "parent_id": null,
+            "id": "01KJAQRKCYR7TNRA44XTDS57W0",
+            "parent_id": "01KJAQMY5C632GNGFZ5DHV11X3",
             "user_id": null
           }
         },
         "short_dict": {
-          "last_step": "condition/0/entity_id/0",
-          "run_id": "d33f971ec100103199dd594f7fea6a39",
-          "state": "stopped",
-          "script_execution": "failed_conditions",
+          "last_step": "action/0/choose/0/sequence/2",
+          "run_id": "5286168f476487505bfad58649bb0bb4",
+          "state": "running",
+          "script_execution": null,
           "timestamp": {
-            "start": "2026-01-15T21:26:00.323038+00:00",
-            "finish": "2026-01-15T21:26:00.323592+00:00"
+            "start": "2026-02-25T15:47:57.470871+00:00",
+            "finish": null
           },
           "domain": "automation",
-          "item_id": "circadian_lighting",
-          "trigger": "time pattern"
+          "item_id": "None",
+          "trigger": "numeric state of sensor.smart_plug_power"
         }
       }
     ]

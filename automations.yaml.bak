@@ -1,0 +1,341 @@
+#Virtual Automations (relevant for future testing)
+# - id: "virtual_motion_lights_test"
+#   alias: Virtual Motion Lights Test
+#   description: "Turn on bulb when motion detected in dark conditions"
+#   trigger:
+#     - platform: state
+#       entity_id: input_boolean.virtual_motion
+#       to: 'on'
+#   condition:
+#     - condition: numeric_state
+#       entity_id: input_number.virtual_lux
+#       below: 100
+#   action:
+#     - service: light.turn_on
+#       target:
+#         entity_id: light.virtual_smart_bulb
+#       data:
+#         brightness_pct: 50
+#         color_temp: 370
+#     - service: notify.persistent_notification
+#       data:
+#         message: "Virtual motion detected! Bulb turned on at {{ now().strftime('%H:%M:%S') }}"
+        
+
+# ─────────────────────────────────────────────────────────────
+# REQUIRED HELPERS — declare these in configuration.yaml first
+# ─────────────────────────────────────────────────────────────
+# input_boolean:
+#   smart_plug_enable:
+#     name: Smart Plug Enable
+#     initial: on
+#     icon: mdi:power
+#   living_room_power_allowed:
+#     name: Living Room Power Allowed
+#     initial: off
+#     icon: mdi:home-lightning-bolt
+#   living_room_motion_enable:
+#     name: Living Room Motion Enable
+#     initial: on
+#     icon: mdi:motion-sensor
+#   living_room_manual_mode:
+#     name: Living Room Manual Mode
+#     initial: off
+#     icon: mdi:hand-back-right
+# ─────────────────────────────────────────────────────────────
+
+
+# ═══════════════════════════════════════════════════════════════
+# 1. LIVING ROOM POWER POLICY
+# ═══════════════════════════════════════════════════════════════
+- alias: Living Room Power Policy
+  description: "Controls power availability based on motion, load, and schedule"
+  trigger:
+    - platform: numeric_state
+      entity_id: sensor.smart_plug_power
+      below: 5
+      for: "00:02:00"
+      id: low_power
+
+    - platform: state
+      entity_id: binary_sensor.sensor_presence
+      to: 'off'
+      for: "00:02:00"
+      id: no_motion
+
+    # Re-enables power when someone returns during the active window
+    - platform: state
+      entity_id: binary_sensor.sensor_presence
+      to: 'on'
+      id: motion_returned
+
+    - platform: sun
+      event: sunset
+      id: on_time
+
+    - platform: time
+      at: "23:00:00"
+      id: off_time
+
+  condition:
+    - condition: state
+      entity_id: input_boolean.smart_plug_enable
+      state: 'on'
+
+  action:
+    - choose:
+        # ─── DISALLOW POWER ───
+        - conditions:
+            - condition: or
+              conditions:
+                - condition: trigger
+                  id: low_power
+                - condition: trigger
+                  id: no_motion
+                - condition: trigger
+                  id: off_time
+          sequence:
+            - service: input_boolean.turn_off
+              target:
+                entity_id: input_boolean.living_room_power_allowed
+
+            - service: switch.turn_off
+              target:
+                entity_id: switch.smart_plug
+
+            - service: system_log.write
+              data:
+                level: info
+                message: "Living room power DISABLED due to {{ trigger.id }}"
+
+        # ─── ALLOW POWER (sunset) ───
+        - conditions:
+            - condition: trigger
+              id: on_time
+          sequence:
+            - service: input_boolean.turn_on
+              target:
+                entity_id: input_boolean.living_room_power_allowed
+
+            - service: switch.turn_on
+              target:
+                entity_id: switch.smart_plug
+
+            - service: system_log.write
+              data:
+                level: info
+                message: "Living room power ENABLED at sunset"
+
+        # ─── ALLOW POWER (presence returned within active window) ───
+        # Replaces the invalid 'condition: sun / which: sunset' syntax which
+        # is not supported in action conditions. Instead we check whether the
+        # sun is currently below the horizon using state_attr, which is valid
+        # everywhere in HA templates, combined with a time check for 23:00.
+        - conditions:
+            - condition: trigger
+              id: motion_returned
+            - condition: template
+              value_template: "{{ state_attr('sun.sun', 'elevation') | float < 0 }}"
+            - condition: time
+              before: "23:00:00"
+          sequence:
+            - service: input_boolean.turn_on
+              target:
+                entity_id: input_boolean.living_room_power_allowed
+
+            - service: switch.turn_on
+              target:
+                entity_id: switch.smart_plug
+
+            - service: system_log.write
+              data:
+                level: info
+                message: "Living room power RE-ENABLED due to presence returning"
+
+  mode: queued
+
+
+# ═══════════════════════════════════════════════════════════════
+# 2. LIVING ROOM MOTION LIGHTING
+# ═══════════════════════════════════════════════════════════════
+- id: "living_room_motion_light"
+  alias: Living Room Motion Light
+  description: "Adaptive motion lighting with power-awareness"
+  trigger:
+    - platform: state
+      entity_id: binary_sensor.sensor_presence
+      to: 'on'
+      id: motion_on
+
+    - platform: state
+      entity_id: binary_sensor.sensor_presence
+      to: 'off'
+      for: "00:01:00"
+      id: motion_off
+
+  condition:
+    - condition: state
+      entity_id: input_boolean.living_room_power_allowed
+      state: 'on'
+
+    - condition: numeric_state
+      entity_id: sensor.sensor_illuminance
+      below: 150
+
+    # sun.sun state condition removed — it was a test artifact that
+    # blocked motion lighting at night when it is most needed.
+
+    - condition: state
+      entity_id: input_boolean.living_room_motion_enable
+      state: 'on'
+
+    - condition: state
+      entity_id: input_boolean.living_room_manual_mode
+      state: 'off'
+
+  action:
+    - choose:
+        # ─── MOTION DETECTED ───
+        - conditions:
+            - condition: trigger
+              id: motion_on
+          sequence:
+            - choose:
+                # Night (23:00–06:00) — warm amber, dim for sleep
+                - conditions:
+                    - condition: time
+                      after: "23:00:00"
+                      before: "06:00:00"
+                  sequence:
+                    - service: light.turn_on
+                      target:
+                        entity_id: light.smart_bulb
+                      data:
+                        brightness_pct: 20
+                        color_temp_kelvin: 2200
+                        transition: 2
+
+                # Evening (18:00–23:00) — warm white, moderate brightness
+                - conditions:
+                    - condition: time
+                      after: "18:00:00"
+                      before: "23:00:00"
+                  sequence:
+                    - service: light.turn_on
+                      target:
+                        entity_id: light.smart_bulb
+                      data:
+                        brightness_pct: 60
+                        color_temp_kelvin: 3000
+                        transition: 3
+
+                # Day (06:00–18:00) — cool daylight, full brightness
+                - conditions:
+                    - condition: time
+                      after: "06:00:00"
+                      before: "18:00:00"
+                  sequence:
+                    - service: light.turn_on
+                      target:
+                        entity_id: light.smart_bulb
+                      data:
+                        brightness_pct: 90
+                        color_temp_kelvin: 5000
+                        transition: 3
+
+            - service: system_log.write
+              data:
+                level: info
+                message: "Motion lighting activated - Light turned ON at {{ now().strftime('%H:%M:%S') }}"
+
+        # ─── MOTION CLEARED ───
+        - conditions:
+            - condition: trigger
+              id: motion_off
+          sequence:
+            - service: light.turn_off
+              target:
+                entity_id: light.smart_bulb
+
+            - service: system_log.write
+              data:
+                level: info
+                message: "Motion lighting turned off - Light turned OFF at {{ now().strftime('%H:%M:%S') }}"
+
+  mode: restart
+
+
+# ═══════════════════════════════════════════════════════════════
+# 3. CIRCADIAN LIGHTING
+# ═══════════════════════════════════════════════════════════════
+- id: "circadian_lighting"
+  alias: Living Room Circadian Lighting
+  description: "Continuously adapts light color and brightness based on sun position.
+    Yields control to motion lighting while presence is actively detected, resuming
+    2 minutes after the room becomes empty so both automations stay in sync."
+  trigger:
+    - platform: time_pattern
+      minutes: "/2"
+
+  condition:
+    - condition: state
+      entity_id: light.smart_bulb
+      state: 'on'
+
+    - condition: state
+      entity_id: input_boolean.living_room_power_allowed
+      state: 'on'
+
+    - condition: state
+      entity_id: input_boolean.living_room_manual_mode
+      state: 'off'
+
+    # ─── PRESENCE GUARD ───
+    # Circadian should run WHILE someone is in the room, not when it's empty.
+    # However, we give motion lighting (#2) a 3-minute head start after someone
+    # enters before circadian begins overriding its initial values. This prevents
+    # the two automations from fighting on entry while still allowing circadian
+    # to smoothly adapt the light during an extended stay.
+    - condition: state
+      entity_id: binary_sensor.sensor_presence
+      state: 'on'
+      for: "00:03:00"
+
+  action:
+    - service: light.turn_on
+      target:
+        entity_id: light.smart_bulb
+      data:
+        brightness_pct: >
+          {% set elev = state_attr('sun.sun', 'elevation') | float %}
+          {% if elev < -6 %}
+            20
+          {% elif elev < 0 %}
+            40
+          {% elif elev < 20 %}
+            70
+          {% else %}
+            90
+          {% endif %}
+        color_temp_kelvin: >
+          {% set elev = state_attr('sun.sun', 'elevation') | float %}
+          {% if elev < -6 %}
+            2200
+          {% elif elev < 0 %}
+            2700
+          {% elif elev < 20 %}
+            3500
+          {% else %}
+            5000
+          {% endif %}
+        transition: 15
+
+    - service: system_log.write
+      data:
+        level: info
+        message: >
+          Circadian update - brightness {{ brightness }}%, color_temp {{ color_temp }}K
+          (sun elevation {{ state_attr('sun.sun', 'elevation') | float }}deg)
+          at {{ now().strftime('%H:%M:%S') }}
+
+  mode: single

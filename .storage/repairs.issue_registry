@@ -108,6 +108,48 @@
         "domain": "hassio",
         "is_persistent": false,
         "issue_id": "5e52711656854f4fb7d7ae49c1b4a5d7"
+      },
+      {
+        "created": "2026-02-19T15:07:20.837106+00:00",
+        "dismissed_version": null,
+        "domain": "automation",
+        "is_persistent": false,
+        "issue_id": "automation.living_room_power_policy_validation_failed_actions"
+      },
+      {
+        "created": "2026-02-19T17:04:44.150692+00:00",
+        "dismissed_version": null,
+        "domain": "hassio",
+        "is_persistent": false,
+        "issue_id": "66133a9844a3471eb1ce66b7d0dbb7bf"
+      },
+      {
+        "created": "2026-02-20T19:34:50.090236+00:00",
+        "dismissed_version": null,
+        "domain": "hassio",
+        "is_persistent": false,
+        "issue_id": "3bd59492f7cf4b1485158b3492c4c62b"
+      },
+      {
+        "created": "2026-02-20T23:42:52.240142+00:00",
+        "dismissed_version": null,
+        "domain": "hassio",
+        "is_persistent": false,
+        "issue_id": "52e43e61cba84585a565754e3b645427"
+      },
+      {
+        "created": "2026-02-20T23:46:06.688360+00:00",
+        "dismissed_version": null,
+        "domain": "hassio",
+        "is_persistent": false,
+        "issue_id": "627023f54ea74b22954ba36968e7e3a6"
+      },
+      {
+        "created": "2026-02-21T13:14:55.000285+00:00",
+        "dismissed_version": null,
+        "domain": "hassio",
+        "is_persistent": false,
+        "issue_id": "02a6e990d3c54ef0833bf7d444fb5ff3"
       }
     ]
   }

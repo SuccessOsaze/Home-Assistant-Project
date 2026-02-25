@@ -10,10 +10,12 @@ known_devices.yaml
 *.db
 *.db-shm
 *.db-wal
-home-assistant.log*
 home-assistant_v2.db*
+home-assistant.log*
+home-assistant_v2.db-shm
+home-assistant_v2.db-wal
 
-# === STORAGE (contains credentials) ===
+# === STORAGE (contains credentials, sessions, etc.) ===
 .storage/
 .cloud/
 .google_maps_location_sharing.cookies.*
@@ -26,6 +28,18 @@ home-assistant_v2.db*
 OZW_Log.txt
 .HA_VERSION
 *.backup
+*.bak               # ← your own backups (automations.yaml.bak etc.)
+
+# === ZIGBEE2MQTT RUNTIME STATE ===
+zigbee2mqtt/database.db
+zigbee2mqtt/state.json
+zigbee2mqtt/coordinator_backup.json
+zigbee2mqtt/configuration_backup_*.yaml   # ← your backups
+
+# === INFLUXDB / GRAFANA ADD-ON DATA ===
+influxdb/
+grafana/data/
+grafana/provisioning/
 
 # === DEPENDENCIES & CACHE ===
 deps/
@@ -33,13 +47,17 @@ tts/
 www/community/
 custom_components/*/.*
 
-# === SYSTEM FILES ===
+# === SYSTEM FILES & OS CRUFT ===
 .DS_Store
 Thumbs.db
 *~
 *.swp
 *.swo
 
-# === SENSITIVE DATA ===
+# === SENSITIVE / PRIVATE DATA ===
 ip_bans.yaml
 .homekit.state
+
+# === MISC ===
+tmp/
+.cache/

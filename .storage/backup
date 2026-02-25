@@ -35,12 +35,6 @@
         "failed_folders": []
       },
       {
-        "backup_id": "9a52207d",
-        "failed_addons": [],
-        "failed_agent_ids": [],
-        "failed_folders": []
-      },
-      {
         "backup_id": "9106d127",
         "failed_addons": [],
         "failed_agent_ids": [],
@@ -54,6 +48,12 @@
       },
       {
         "backup_id": "be4db9a1",
+        "failed_addons": [],
+        "failed_agent_ids": [],
+        "failed_folders": []
+      },
+      {
+        "backup_id": "f51d4b88",
         "failed_addons": [],
         "failed_agent_ids": [],
         "failed_folders": []
