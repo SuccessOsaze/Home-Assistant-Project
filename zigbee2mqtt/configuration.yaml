@@ -1,4 +1,4 @@
-version: 4
+version: 5
 mqtt:
   base_topic: zigbee2mqtt
   server: mqtt://core-mosquitto:1883
@@ -10,7 +10,7 @@ serial:
   baudrate: 115200
   rtscts: false
 advanced:
-  log_level: info
+  log_level: debug
   channel: 11
   network_key:
     - 54
@@ -39,6 +39,9 @@ advanced:
     - 183
     - 245
     - 247
+  elapsed: true
+  log_directories_to_keep: 351
+  last_seen: ISO_8601
 frontend:
   enabled: true
   port: 8099
@@ -53,3 +56,7 @@ devices:
     friendly_name: Smart_Plug
 availability:
   enabled: true
+device_options:
+  homeassistant:
+    last_seen:
+      enabled_by_default: true
